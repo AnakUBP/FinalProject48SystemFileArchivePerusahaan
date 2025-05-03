@@ -1,0 +1,92 @@
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Arial', sans-serif;
+    }
+    
+    body {
+        background-color: #ffffff;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .card {
+        background-color: #fff;
+        padding: 30px 25px;
+        border-radius: 20px;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        width: 370px;
+        text-align: left;
+        position: relative;
+    }
+    
+    .back {
+        position: absolute;
+        left: 20px;
+        top: 20px;
+        font-size: 22px;
+        cursor: pointer;
+    }
+    
+    h2 {
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    
+    p {
+        text-align: center;
+        color: #777;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+    
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    label {
+        margin: 10px 0 5px;
+        font-size: 14px;
+    }
+    
+    input {
+        border: none;
+        border-bottom: 1px solid #ccc;
+        padding: 8px 4px;
+        outline: none;
+    }
+    
+    .forgot {
+        text-align: right;
+        margin-top: 8px;
+    }
+    
+    .forgot a {
+        font-size: 12px;
+        color: #5d7eff;
+        text-decoration: none;
+    }
+    
+    button {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #5d7eff;
+        color: #fff;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+    

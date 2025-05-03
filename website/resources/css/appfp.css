@@ -1,0 +1,78 @@
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Arial', sans-serif;
+    }
+    
+    body, html {
+        height: 100%;
+        background-color: #fff;
+    }
+    
+    .forgot-container {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .forgot-card {
+        width: 90%;
+        max-width: 400px;
+        padding: 30px 40px;
+        border-radius: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        position: relative;
+        background-color: white;
+    }
+    
+    .back-arrow {
+        font-size: 24px;
+        position: absolute;
+        left: 20px;
+        top: 20px;
+        cursor: pointer;
+    }
+    
+    .forgot-card h2 {
+        text-align: center;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .forgot-card p {
+        text-align: center;
+        font-size: 14px;
+        color: #777;
+        margin-bottom: 25px;
+    }
+    
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    form label {
+        margin-bottom: 5px;
+        color: #555;
+    }
+    
+    form input {
+        padding: 10px;
+        margin-bottom: 20px;
+        border: none;
+        border-bottom: 1px solid #aaa;
+        outline: none;
+    }
+    
+    form button {
+        padding: 12px;
+        background-color: #4d6eff;
+        border: none;
+        color: white;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+    
