@@ -1,0 +1,34 @@
+<div class="header">
+  <img src="../assets/logo.svg" alt="Logo" class="logo-image" />
+</div>
+<ion-content id="login-page">
+  <div class="main">
+    <ion-title>
+      <h1 style="color: black;">Login</h1>
+    </ion-title>
+    <ion-list  style="background-color:rgb(255, 255, 255);">
+      <ion-item style="color: rgb(0, 0, 0);" >
+        <ion-input labelPlacement="stacked" label="Email" placeholder="email" style="background-color:rgb(255, 255, 255);">
+        <ion-icon slot="start" name="lock-closed" aria-hidden="true"></ion-icon>
+        <ion-button fill="clear" slot="end" aria-label="Show/hide"></ion-button> 
+        </ion-input>
+      </ion-item>
+      <ion-item style="color: rgb(0, 0, 0);">
+        <ion-input labelPlacement="stacked" label="Password" placeholder="password" style="background-color:rgb(255, 255, 255);">
+        <ion-icon slot="start" name="lock-closed" aria-hidden="true"></ion-icon>
+        <ion-button fill="clear" slot="end" aria-label="Show/hide">
+        <ion-input-password-toggle slot="end"></ion-input-password-toggle></ion-button>
+        </ion-input> 
+      </ion-item>
+    </ion-list>
+      <ion-button fill="clear"><u>Forget Password</u></ion-button >
+      <ion-button expand="block" shape="square" style="color: white;">Submit</ion-button>
+  </div>
+</ion-content>
+<ion-footer class="ion-no-border" text-allign="center">
+  <ion-toolbar id="footer">
+    <ion-title>
+      <h1>Emmes</h1>
+    </ion-title>
+  </ion-toolbar>
+</ion-footer>
