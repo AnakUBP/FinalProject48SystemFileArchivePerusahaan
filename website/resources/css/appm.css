@@ -1,0 +1,147 @@
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+    
+    body {
+        display: flex;
+        min-height: 100vh;
+        background: #f5f5f5;
+    }
+    
+    .sidebar {
+        width: 220px;
+        background-color: #007e9e;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .logo-perusahaan {
+        width: 100px;
+    }
+    .sidebar-header {
+        text-align: center;
+        padding-bottom: 100px;
+    }
+    
+    .menu {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .menu li {
+        padding: 15px 20px;
+        cursor: pointer;
+    }
+    
+    .menu li.active,
+    .menu li:hover {
+        background-color: #05677d;
+    }
+    
+    .logout {
+        padding: 15px 20px;
+        text-align: center;
+        border-top: 1px solid white;
+    }
+    
+    .logout a {
+        color: white;
+        text-decoration: none;
+    }
+    
+    .main-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .navbar {
+        background-color: rgb(255, 255, 255);
+        padding: 27.5px 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .user-dropdown {
+        flex-direction: row-reverse;
+    }
+    
+    .header {
+        background-color: #00bcd4;
+        color: white;
+        padding: 20px;
+        text-align: center;
+    }
+    
+    .cards {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+    }
+    
+    .card {
+        flex: 1;
+        padding: 20px;
+        color: white;
+        border-radius: 5px;
+        position: relative;
+    }
+    
+    .card button {
+        margin-top: 10px;
+        background: #333;
+        border: none;
+        padding: 8px 12px;
+        color: white;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+    
+    .card.masuk {
+        background-color: #009688;
+    }
+    
+    .card.keluar {
+        background-color: #ff9800;
+    }
+    
+    .calendar {
+        background-color: white;
+        margin: 0 20px 20px;
+        padding: 20px;
+        border-radius: 5px;
+    }
+    
+    .calendar h4 {
+        background: #2196f3;
+        color: white;
+        padding: 10px;
+        border-radius: 5px 5px 0 0;
+        text-align: center;
+    }
+    
+    .calendar table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+    
+    .calendar th,
+    .calendar td {
+        text-align: center;
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+    
+    .calendar .active {
+        background-color: #03a9f4;
+        color: white;
+        font-weight: bold;
+        border-radius: 50%;
+    }
+    
