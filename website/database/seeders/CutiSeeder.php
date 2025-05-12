@@ -3,29 +3,31 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Cuti;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class CutiSeeder extends Seeder
 {
     public function run(): void
     {
-        Cuti::create([
-            'user_id' => 2, // asumsikan karyawan ID 2
-            'jenis_cuti_id' => 1, // Cuti Tahunan
-            'tanggal_mulai' => Carbon::now()->addDays(3)->toDateString(),
-            'tanggal_selesai' => Carbon::now()->addDays(5)->toDateString(),
-            'alasan' => 'Liburan keluarga',
-            'status' => 'diajukan',
-        ]);
-
-        Cuti::create([
-            'user_id' => 2,
-            'jenis_cuti_id' => 2, // Cuti Sakit
-            'tanggal_mulai' => Carbon::now()->subDays(7)->toDateString(),
-            'tanggal_selesai' => Carbon::now()->subDays(5)->toDateString(),
-            'alasan' => 'Sakit demam',
-            'status' => 'disetujui',
+        DB::table('cuti')->insert([
+            [
+                'user_id' => 3,
+                'jenis_cuti_id' => 1,
+                'tanggal_mulai' => now()->addDays(5)->toDateString(),
+                'tanggal_selesai' => now()->addDays(10)->toDateString(),
+                'alasan' => 'Liburan keluarga',
+                'status' => 'diajukan',
+                'nomor_surat' => 'HRD/2025/001'
+            ],
+            [
+                'user_id' => 3,
+                'jenis_cuti_id' => 2,
+                'tanggal_mulai' => now()->addDays(2)->toDateString(),
+                'tanggal_selesai' => now()->addDays(3)->toDateString(),
+                'alasan' => 'Cuti karena demam',
+                'status' => 'diajukan',
+                'nomor_surat' => 'HRD/2025/002'
+            ]
         ]);
     }
 }

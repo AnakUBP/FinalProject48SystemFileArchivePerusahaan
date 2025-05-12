@@ -3,18 +3,15 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\JenisCuti;
+use Illuminate\Support\Facades\DB;
 
 class JenisCutiSeeder extends Seeder
 {
     public function run(): void
     {
-        $cuti = ['Cuti Tahunan', 'Cuti Sakit', 'Cuti Melahirkan', 'Cuti Khusus'];
-
-        foreach ($cuti as $jenis) {
-            JenisCuti::create([
-                'nama' => $jenis,
-            ]);
-        }
+        DB::table('jenis_cuti')->insert([
+            ['nama_cuti' => 'Cuti Tahunan', 'kode_cuti' => 'CT-01', 'keterangan' => 'Cuti tahunan biasa'],
+            ['nama_cuti' => 'Cuti Sakit', 'kode_cuti' => 'CS-02', 'keterangan' => 'Cuti karena sakit'],
+        ]);
     }
 }
