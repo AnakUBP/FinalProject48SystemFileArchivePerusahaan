@@ -10,8 +10,6 @@ class Template extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'category',
-        'file_path',
+        'nama_template', 'kategori', 'file_path'
     ];
 }
