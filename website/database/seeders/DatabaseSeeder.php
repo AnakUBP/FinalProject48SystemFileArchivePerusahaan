@@ -15,10 +15,16 @@ class DatabaseSeeder extends Seeder
         // Buat 10 user dummy
         User::factory(10)->create();
 
-        // Panggil seeder lainnya
+        // Panggil seeder lainnya dengan urutan benar
         $this->call([
+            TemplateSeeder::class,    // harus pertama agar tabel templates sudah terisi
+            JenisCutiSeeder::class,   // setelah templates
             ProfileSeeder::class,
-            // Tambahkan seeder lain di sini jika ada
+            CutiSeeder::class,
+            ApprovalLogSeeder::class,
+            ArsipCutiSeeder::class,
+            LogSuratSeeder::class,
+            KalenderEventSeeder::class,
         ]);
     }
 }
