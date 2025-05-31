@@ -17,7 +17,7 @@ class CutiSeeder extends Seeder
                 'tanggal_selesai' => now()->addDays(10)->toDateString(),
                 'alasan' => 'Liburan keluarga',
                 'status' => 'diajukan',
-                'nomor_surat' => 'HRD/2025/001'
+                'nomor_surat' => 'Admin/2025/001'
             ],
             [
                 'user_id' => 3,
@@ -26,7 +26,7 @@ class CutiSeeder extends Seeder
                 'tanggal_selesai' => now()->addDays(3)->toDateString(),
                 'alasan' => 'Cuti karena demam',
                 'status' => 'diajukan',
-                'nomor_surat' => 'HRD/2025/002'
+                'nomor_surat' => 'Admin/2025/002'
             ]
         ]);
     }
