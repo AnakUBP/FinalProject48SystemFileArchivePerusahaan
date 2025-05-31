@@ -1,0 +1,13 @@
+[2025-05-31 09:27:38] local.ERROR: Class "Spatie\LaravelIgnition\IgnitionServiceProvider" not found {"exception":"[object] (Error(code: 0): Class \"Spatie\\LaravelIgnition\\IgnitionServiceProvider\" not found at C:\\xampp\\htdocs\\FinalProject48SystemFileArchivePerusahaan\\website\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php:960)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\FinalProject48SystemFileArchivePerusahaan\\website\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(892): Illuminate\\Foundation\\Application->resolveProvider('Spatie\\\\LaravelI...')
+#1 C:\\xampp\\htdocs\\FinalProject48SystemFileArchivePerusahaan\\website\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\ProviderRepository.php(74): Illuminate\\Foundation\\Application->register('Spatie\\\\LaravelI...')
+#2 C:\\xampp\\htdocs\\FinalProject48SystemFileArchivePerusahaan\\website\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(870): Illuminate\\Foundation\\ProviderRepository->load(Array)
+#3 C:\\xampp\\htdocs\\FinalProject48SystemFileArchivePerusahaan\\website\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\RegisterProviders.php(37): Illuminate\\Foundation\\Application->registerConfiguredProviders()
+#4 C:\\xampp\\htdocs\\FinalProject48SystemFileArchivePerusahaan\\website\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(341): Illuminate\\Foundation\\Bootstrap\\RegisterProviders->bootstrap(Object(Illuminate\\Foundation\\Application))
+#5 C:\\xampp\\htdocs\\FinalProject48SystemFileArchivePerusahaan\\website\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(473): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#6 C:\\xampp\\htdocs\\FinalProject48SystemFileArchivePerusahaan\\website\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(195): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#7 C:\\xampp\\htdocs\\FinalProject48SystemFileArchivePerusahaan\\website\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1234): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 C:\\xampp\\htdocs\\FinalProject48SystemFileArchivePerusahaan\\website\\artisan(13): Illuminate\\Foundation\\Application->handleCommand(Object(Symfony\\Component\\Console\\Input\\ArgvInput))
+#9 {main}
+"} 
