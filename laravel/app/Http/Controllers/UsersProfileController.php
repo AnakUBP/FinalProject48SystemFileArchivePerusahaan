@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Users; // FIX: Diubah ke Users
-use App\Models\Profile; 
+use App\Models\Users;
+use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -12,109 +12,152 @@ use Illuminate\Validation\Rule;
 class UsersProfileController extends Controller
 {
     /**
-     * Menampilkan halaman manajemen user dan profil.
+     * Menampilkan halaman utama untuk manajemen user dan profil.
      */
     public function index()
     {
-        $users = Users::with('profile')->latest()->get(); // FIX: Diubah ke Users
+        // Ambil semua user beserta relasi profilnya, urutkan dari yang terbaru.
+        $users = Users::with('profile')->latest()->get();
+        // Kembalikan view dan kirim data users.
         return view('UsersProfiles', compact('users'));
     }
 
     /**
-     * Menyimpan user dan profil baru.
+     * Menyimpan user baru beserta profilnya.
      */
     public function store(Request $request)
     {
-        // Memulai blok 'try' untuk menangani potensi error selama eksekusi.
-        // Jika ada error di dalam blok ini, eksekusi akan melompat ke blok 'catch'.
         try {
-            // Langkah Validasi: Memastikan semua data yang dikirim dari form sesuai aturan.
-            // Jika validasi gagal, Laravel akan otomatis melempar 'ValidationException'.
+            // 1. Validasi semua input dari form.
             $validatedData = $request->validate([
                 'name'          => 'required|string|max:255',
-                'email'         => 'required|string|email|max:255|unique:users', // Email harus unik di tabel users
+                'email'         => 'required|string|email|max:255|unique:users',
                 'password'      => 'required|string|min:8',
-                'role'          => ['required', Rule::in(['admin', 'karyawan'])], // Role harus salah satu dari 'admin' atau 'karyawan'
-                'nama_lengkap'  => 'nullable|string|max:255', // Boleh kosong
+                'role'          => ['required', Rule::in(['admin', 'karyawan'])],
+                'nama_lengkap'  => 'nullable|string|max:255',
                 'jabatan'       => 'nullable|string|max:100',
                 'telepon'       => 'nullable|string|max:15',
-                'jenis_kelamin' => ['required', Rule::in(['pria', 'wanita'])], // Wajib diisi
-                'foto'          => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Boleh kosong, harus gambar, max 2MB
+                'jenis_kelamin' => ['required', Rule::in(['pria', 'wanita'])],
+                'foto'          => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
-            // === Langkah 1: Buat dan Simpan Data User ===
-            
-            // Membuat instance/objek baru dari Model Users.
-            $user = new Users(); // FIX: Diubah ke Users
-            
-            // Mengisi properti objek User dengan data yang sudah divalidasi.
-            $user->name     = $validatedData['name'];
-            $user->email    = $validatedData['email'];
-            $user->password = $validatedData['password']; // Password akan otomatis di-hash oleh mutator di Model User
-            $user->role     = $validatedData['role'];
-            $user->aktif    = $request->has('aktif'); // Bernilai true jika checkbox 'aktif' dicentang
-            
-            // Menyimpan objek User ke dalam tabel 'users' di database.
-            // Setelah ini, $user akan memiliki ID yang diberikan oleh database.
-            $user->save(); 
+            // 2. Gunakan transaksi database untuk keamanan data.
+            // Jika ada yang gagal, semua proses akan dibatalkan.
+            DB::transaction(function () use ($request, $validatedData) {
+                // Tahap 1: Buat dan simpan data ke tabel 'users'.
+                $user = Users::create([
+                    'name'      => $validatedData['name'],
+                    'email'     => $validatedData['email'],
+                    'password'  => $validatedData['password'], // Di-hash otomatis oleh mutator di model.
+                    'role'      => $validatedData['role'],
+                    'aktif'     => $request->has('aktif'),
+                ]);
 
-            // === Langkah 2: Buat dan Simpan Data Profil ===
+                // Tahap 2: Siapkan dan simpan data ke tabel 'profiles'.
+                $profileData = [
+                    'users_id'      => $user->id, // Hubungkan dengan user yang baru dibuat.
+                    'nama_lengkap'  => $validatedData['nama_lengkap'],
+                    'jabatan'       => $validatedData['jabatan'],
+                    'telepon'       => $validatedData['telepon'],
+                    'jenis_kelamin' => $validatedData['jenis_kelamin'],
+                ];
 
-            // Membuat instance/objek baru dari Model Profile.
-            $profile = new Profile();
+                // Proses upload foto jika ada.
+                if ($request->hasFile('foto')) {
+                    $filePath = $request->file('foto')->store('profiles', 'public');
+                    $profileData['foto'] = $filePath;
+                }
 
-            // Menghubungkan profil ini dengan user yang baru saja dibuat menggunakan ID-nya.
-            $profile->users_id = $user->id; 
+                Profile::create($profileData);
+            });
 
-            // Mengisi properti objek Profile dengan data dari request.
-            $profile->nama_lengkap  = $request->nama_lengkap;
-            $profile->jabatan       = $request->jabatan;
-            $profile->telepon       = $request->telepon;
-            $profile->jenis_kelamin = $request->jenis_kelamin;
+            // 3. Kembalikan ke halaman daftar dengan pesan sukses.
+            return redirect()->route('user-profiles.index')->with('success', 'User baru berhasil ditambahkan.');
 
-            // Memeriksa apakah ada file 'foto' yang di-upload bersama form.
-            if ($request->hasFile('foto')) {
-                // Menyimpan file ke 'storage/app/public/profiles' dan mendapatkan path-nya.
-                $filePath = $request->file('foto')->store('public/profiles');
-                // Menyimpan path bersih (tanpa 'public/') ke properti 'foto' di objek profile.
-                $profile->foto = str_replace('public/', '', $filePath);
-            }
-
-            // Menyimpan objek Profile ke dalam tabel 'profiles' di database.
-            $profile->save();
-
-            // Jika semua langkah di atas berhasil, arahkan kembali ke halaman daftar user.
-            // 'with()' akan mengirimkan pesan sukses (flash message) ke sesi.
-            return redirect()->route('user-profiles.index')->with('success', 'User berhasil ditambahkan.');
-
-        // Menangkap error yang spesifik terjadi karena validasi gagal.
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            // Arahkan pengguna kembali ke halaman form sebelumnya.
-            // 'withErrors()' akan membawa semua pesan error validasi.
-            // 'withInput()' akan mengisi kembali form dengan data yang sebelumnya diinput pengguna.
-            return redirect()->back()->withErrors($e->validator)->withInput();
-        
-        // Menangkap semua jenis error lain yang mungkin terjadi (misal: error database).
         } catch (\Exception $e) {
-            // Arahkan kembali ke halaman sebelumnya dengan pesan error yang lebih umum.
-            // '$e->getMessage()' akan menampilkan pesan error asli untuk debugging.
-            return redirect()->back()->with('error', 'Gagal menambahkan user: ' . $e->getMessage())->withInput();
+            // Jika terjadi error, kembali dengan pesan error yang jelas.
+            return back()->with('error', 'Gagal menambahkan user: ' . $e->getMessage())->withInput();
         }
     }
 
     /**
-     * Memperbarui user dan profil yang ada.
+     * Mengupdate data user dan profil yang sudah ada.
      */
-    public function update(Request $request, Users $userProfile) // FIX: Diubah ke Users
+    public function update(Request $request, Users $userProfile)
     {
-        // ... (kode update)
+        try {
+            // Validasi data, email harus unik kecuali untuk user ini sendiri.
+            $validatedData = $request->validate([
+                'name'          => 'required|string|max:255',
+                'email'         => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($userProfile->id)],
+                'password'      => 'nullable|string|min:8', // Tidak wajib diisi saat update.
+                'role'          => ['required', Rule::in(['admin', 'karyawan'])],
+                'nama_lengkap'  => 'nullable|string|max:255',
+                'jabatan'       => 'nullable|string|max:100',
+                'telepon'       => 'nullable|string|max:15',
+                'jenis_kelamin' => ['required', Rule::in(['pria', 'wanita'])],
+                'foto'          => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
+
+            DB::transaction(function () use ($request, $userProfile, $validatedData) {
+                // Update data di tabel 'users'.
+                $userData = [
+                    'name'      => $validatedData['name'],
+                    'email'     => $validatedData['email'],
+                    'role'      => $validatedData['role'],
+                    'aktif'     => $request->has('aktif'),
+                ];
+                // Hanya update password jika diisi.
+                if (!empty($validatedData['password'])) {
+                    $userData['password'] = $validatedData['password'];
+                }
+                $userProfile->update($userData);
+
+                // Update atau buat data di tabel 'profiles'.
+                $profileData = $request->only(['nama_lengkap', 'jabatan', 'telepon', 'jenis_kelamin']);
+
+                if ($request->hasFile('foto')) {
+                    // Hapus foto lama sebelum upload yang baru.
+                    if ($userProfile->profile?->foto) {
+                        Storage::disk('public')->delete($userProfile->profile->foto);
+                    }
+                    $profileData['foto'] = $request->file('foto')->store('profiles', 'public');
+                }
+
+                // updateOrCreate: update jika profil ada, buat jika tidak ada.
+                $userProfile->profile()->updateOrCreate(['users_id' => $userProfile->id], $profileData);
+            });
+
+            return redirect()->route('user-profiles.index')->with('success', 'Data user berhasil diperbarui.');
+
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal memperbarui user: ' . $e->getMessage())->withInput();
+        }
     }
 
     /**
-     * Menghapus user (soft delete).
+     * Menghapus user dari database.
      */
-    public function destroy(Users $userProfile) // FIX: Diubah ke Users
+    public function destroy(Users $userProfile)
     {
-        // ... (kode destroy)
+        try {
+            // Mencegah admin menghapus akunnya sendiri.
+            if ($userProfile->id === auth()->id()) {
+                return back()->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
+            }
+
+            // Hapus foto profil dari storage jika ada.
+            if ($userProfile->profile?->foto) {
+                Storage::disk('public')->delete($userProfile->profile->foto);
+            }
+
+            // Hapus record user. Profil akan terhapus otomatis karena 'onDelete('cascade')'.
+            $userProfile->delete();
+
+            return redirect()->route('user-profiles.index')->with('success', 'User berhasil dihapus.');
+
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal menghapus user: ' . $e->getMessage());
+        }
     }
 }

@@ -8,7 +8,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     {{-- FIX: Menyesuaikan path file CSS dan JS agar sesuai dengan standar Vite --}}
-    @vite(['resources/css/dashboard.css', 'resources/css/user-profiles.css', 'resources/js/user-profiles.js'])
+    @vite(['resources/css/dashboard.css', 'resources/js/dashboard.js', 'resources/css/userprofiles.css', 'resources/js/userprofiles.js'])
 </head>
 <script>
     // Kirim data yang dibutuhkan ke JavaScript
@@ -79,30 +79,21 @@
                         </div>
                     </div>
                 </div>
-            </header>
+            </header>           
+            <script>
+                window.alertStatus = {
+                    success: @json(session('success')),
+                    error: @json(session('error'))
+                };
+            </script>
             <div class="content">
                 <div class="page-title">
                     <h1>Manajemen User & Profil</h1>
                 </div>
-
-                {{-- FIX: Menambahkan blok untuk menampilkan pesan sukses atau error --}}
-                @if (session('success'))
-                    <div class="alert alert-success"
-                        style="background-color: #d1f7e8; color: #0d694b; padding: 1rem; border-radius: 5px; margin-bottom: 1rem;">
-                        {{ session('success') }}
-                    </div>
-                @endif
-                @if (session('error'))
-                    <div class="alert alert-danger"
-                        style="background-color: #fdeaea; color: #c73434; padding: 1rem; border-radius: 5px; margin-bottom: 1rem;">
-                        <strong>Error:</strong> {{ session('error') }}
-                    </div>
-                @endif
-
                 <div class="user-profiles-container">
                     {{-- FIX: Menghapus div header yang berulang/duplikat --}}
                     <div class="user-profiles-header">
-                        <button class="btn btn-primary" onclick="openModal()">
+                        <button class="btn btn-primary" onclick="openup()">
                             <i class="fas fa-plus"></i> Tambah User</button>
                     </div>
 
@@ -134,7 +125,7 @@
                                     <td>{{ $user->profile?->jabatan ?? '-' }}</td>
                                     <td><span class="badge badge-{{$user->role}}">{{ ucfirst($user->role) }}</span></td>
                                     <td>
-                                        @if(!$user->aktif)
+                                        @if(!$user->active)
                                             <span class="status-badge status-disabled">Nonaktif</span>
                                         @elseif($user->isOnline())
                                             <span class="status-badge status-online">Online</span>
@@ -144,7 +135,7 @@
                                     </td>
                                     <td>{{ $user->created_at->format('d M Y') }}</td>
                                     <td class="user-profiles-actions-cell">
-                                        <button class="action-btn edit-btn" onclick="editModal({{ $user->id }})"><i
+                                        <button class="action-btn edit-btn" onclick="editup({{ $user->id }})"><i
                                                 class="fas fa-edit"></i></button>
                                         <form action="{{ route('user-profiles.destroy', $user->id) }}" method="POST"
                                             style="display:inline;">
@@ -169,11 +160,83 @@
             </div>
         </main>
     </div>
+    <div id="userProfileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Tambah User Baru</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="userProfileForm" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div id="formMethod"></div>
 
-    {{-- Modal --}}
-    <div id="userProfileModal" class="modal-user-profile">
-        {{-- ... Isi Modal Anda ... --}}
+                <div class="modal-body">
+                    <div class="form-section">
+                        <h4>Informasi Akun</h4>
+                        <div class="form-group">
+                            <label for="name">Nama Panggilan</label>
+                            <input type="text" id="name" name="name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" class="form-control">
+                            <small id="passwordHelp">Kosongkan jika tidak ingin mengubah.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="role">Role</label>
+                            <select id="role" name="role" class="form-control" required>
+                                <option value="karyawan">Karyawan</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                        <div class="form-group form-check">
+                            <input type="checkbox" id="aktif" name="aktif" class="form-check-input">
+                            <label for="aktif" class="form-check-label">Akun Aktif</label>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <h4>Informasi Profil</h4>
+                        <div class="form-group">
+                            <label>Foto Profil</label>
+                            <img id="imagePreview" src="https://ui-avatars.com/api/?name=?" alt="Preview Foto"
+                                class="preview-img">
+                            <input type="file" name="foto" id="foto" class="form-control-file"
+                                onchange="previewImage(event);">
+                        </div>
+                        <div class="form-group">
+                            <label for="nama_lengkap">Nama Lengkap</label>
+                            <input type="text" id="nama_lengkap" name="nama_lengkap" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="jabatan">Jabatan</label>
+                            <input type="text" id="jabatan" name="jabatan" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="jenis_kelamin">Jenis Kelamin</label>
+                            <select id="jenis_kelamin" name="jenis_kelamin" class="form-control" required>
+                                <option value="pria">Pria</option>
+                                <option value="wanita">Wanita</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="telepon">Telepon</label>
+                            <input type="text" id="telepon" name="telepon" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
     </div>
+
 </body>
 
 </html>
