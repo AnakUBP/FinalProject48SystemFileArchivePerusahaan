@@ -16,24 +16,16 @@ class UsersTableSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'name' => 'Admin',
-                'email' => 'admin@example.com',
-                'password' => Hash::make('password'),
+                'email' => 'fajariman2004@gmail.com',
+                'password' => Hash::make('tdaghdavsbdhihaj5678965678'),
                 'role' => 'admin',
                 'created_at' => $now,
                 'updated_at' => $now,
             ],
             [
-                'name' => 'HRD',
-                'email' => 'hrd@example.com',
-                'password' => Hash::make('password'),
-                'role' => 'admin', // ubah ke 'hrd' jika diperlukan
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-            [
-                'name' => 'Karyawan 1',
-                'email' => 'karyawan1@example.com',
-                'password' => Hash::make('password'),
+                'name' => 'fajar',
+                'email' => 'if23.fajarpratama@mhs.ubpkarawang.ac.id',
+                'password' => Hash::make('mahasiswayangtakabadi625'),
                 'role' => 'karyawan',
                 'created_at' => $now,
                 'updated_at' => $now,
