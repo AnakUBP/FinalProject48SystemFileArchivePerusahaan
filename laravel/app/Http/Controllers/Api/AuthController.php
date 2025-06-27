@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User; // Pastikan menggunakan model User (singular)
 use Illuminate\Http\Request;
+use App\Models\ActivityLog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -70,6 +71,13 @@ class AuthController extends Controller
                     'token' => $token,
                 ]
             ], 200);
+            ActivityLog::create([
+                'user_id' => auth()->id(),
+                'action' => 'login',
+                'description' => 'User login ke sistem.',
+                'loggable_id' => auth()->id(),
+                'loggable_type' => get_class(auth()->user()),
+            ]);
 
         } catch (\Exception $e) {
             return response()->json([
@@ -77,6 +85,29 @@ class AuthController extends Controller
                 'message' => 'Terjadi kesalahan: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+        
+        // Hapus token yang sedang digunakan untuk autentikasi
+        $user->currentAccessToken()->delete();
+
+        // Tambahkan Log Aktivitas untuk Logout
+        ActivityLog::create([
+            'user_id'       => $user->id,
+            'action'        => 'api_logout',
+            'description'   => 'Pengguna ' . $user->name . ' berhasil logout dari API.',
+            'loggable_id'   => $user->id,
+            'loggable_type' => get_class($user),
+        ]);
+        // ----------------------------------------------
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Logout berhasil.'
+        ], 200);
     }
     
     /**

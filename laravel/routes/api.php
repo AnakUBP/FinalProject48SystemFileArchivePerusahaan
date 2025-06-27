@@ -34,4 +34,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/cuti', [CutiController::class, 'index']);
     Route::post('/cuti', [CutiController::class, 'store']);
     Route::get('/cuti/{pengajuanCuti}', [CutiController::class, 'show']);
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
