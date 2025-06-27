@@ -4,12 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Sistem Karyawan</title>
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <title>Admin Dashboard</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/dashboard.css', 'resources/js/dashboard.js']); ?>
+    
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/dashboard.css', 'resources/js/dashboard.js', 'resources/css/dashboardcontent.css', 'resources/js/dashboardcalender.js']); ?>
 </head>
 
 <body>
@@ -17,41 +16,26 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <img src="img/logo.svg" alt="Logo Perusahaan" class="logo-perusahaan" />
+                <img src="/img/logo.svg" alt="Logo Perusahaan" class="logo-perusahaan" />
                 <p>Admin</p>
             </div>
             <nav class="sidebar-nav">
                 <ul>
-                    <li class="active">
-                        <a href="<?php echo e(route('dashboard')); ?>">
-                            <i class="fas fa-tachometer-alt"></i> Dashboard
-                        </a>
+                    <li class="active"><a href="<?php echo e(route('dashboard')); ?>"><i class="fas fa-tachometer-alt"></i>
+                            Dashboard</a></li>
+                    <li><a href="<?php echo e(route('template')); ?>"><i class="fas fa-file-word"></i> Template</a></li>
+                    <li><a href="<?php echo e(route('jeniscuti.index')); ?>"><i class="fas fa-calendar-alt"></i>Jenis Cuti</a></li>
+                    <li><a href="<?php echo e(route('user-profiles.index')); ?>"><i class="fas fa-users-cog"></i> User & Profil</a>
                     </li>
-                    <li>
-                        <a href="<?php echo e(route('template')); ?>">
-                            <i class="fas bi-filetype-docx"></i> Template
-                        </a>
+                    <li><a href="<?php echo e(route('manajemen-cuti')); ?>"><i class="fas fa-envelope-open-text"></i>Kelola Cuti</a>
                     </li>
-                    <li>
-                        <a href="<?php echo e(route('jeniscuti.index')); ?>">
-                            <i class="fas bi-calendar2-event"></i> Jenis Cuti
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?php echo e(route('UsersProfiles')); ?>">
-                            <i class="fas bi-calendar2-event"></i> Users
-                        </a>
-                    </li>
-                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('admin')): ?>
-                        <li>
-                            <a href="<?php echo e(route('users.index')); ?>">
-                                <i class="fas fa-users"></i> User Management
-                            </a>
-                        </li>
-                    <?php endif; ?>
+                    <li><a href="<?php echo e(route('laporan')); ?>"><i class="fas fa-chart-bar"></i> Laporan</a></li>
+                    <li><a href="<?php echo e(route('riwayat')); ?>"><i class="fas fa-history"></i> Riwayat Surat</a></li>
+                    <li><a href="<?php echo e(route('log.aktivitas')); ?>"><i class="fas fa-history"></i> Log Aktivitas</a></li>
                 </ul>
             </nav>
         </aside>
+
 
         <!-- Main Content -->
         <main class="main-content">
@@ -76,7 +60,22 @@
                 </div>
             </header>
             <div class="content">
-                <h1 class="page-title">Dashboard</h1>
+                <div class="stats-container">
+                    <div class="stat-card primary">
+                        <h2><?php echo e($suratMasuk); ?></h2>
+                        <p>Surat Masuk</p>
+                        <a href="<?php echo e(route('manajemen-cuti')); ?>">selengkapnya</a>
+                    </div>
+                    <div class="stat-card secondary">
+                        <h2><?php echo e($suratKeluar); ?></h2>
+                        <p>Surat Keluar</p>
+                        <a href="<?php echo e(route('riwayat')); ?>">selengkapnya</a>
+                    </div>
+                </div>
+                <div class="calendars-wrapper" id="calendars-container" data-leave-details="<?php echo e(json_encode($detailCutiPerTanggal)); ?>">
+                    <div id="calendar-current-month" class="calendar-container"></div>
+                    <div id="calendar-next-month" class="calendar-container"></div>
+                </div>
             </div>
         </main>
     </div>

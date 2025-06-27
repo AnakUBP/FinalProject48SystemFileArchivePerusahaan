@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -7,8 +7,11 @@ use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JenisCutiController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\ProfilesController;
+use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\UsersProfileController;
+use App\Http\Controllers\PengajuanCutiController;
+use App\Http\Controllers\RiwayatSuratController;
+use App\Http\Controllers\LaporanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,16 +23,21 @@ use App\Http\Controllers\UsersProfileController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
 // Auth Routes
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome')->middleware('guest');
 
-Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Auth::routes();
+
+Route::middleware('guest')->group(function () {
+    Route::get('/', function () {
+        return view('welcome');
+    })->name('welcome');
+    
+    Route::post('/login', [LoginController::class, 'login'])->name('login');
+});
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/log-aktivitas', [ActivityLogController::class, 'index'])->name('log.aktivitas');
+    Route::get('/log-aktivitas/load', [ActivityLogController::class, 'loadMore'])->name('log.aktivitas.load');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 
@@ -42,12 +50,34 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/UsersProfiles', [UsersProfileController::class, 'index'])->name('UsersProfiles');
     Route::resource('user-profiles', UsersProfileController::class)->except(['show']);
 
-    // ProfileRoute::resource('user-profiles', UserProfileController::class)->except(['show']);
-    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/manajemen-cuti', [PengajuanCutiController::class, 'index'])->name('manajemen-cuti');
 
-    // User Management (Admin Only)
-    Route::middleware('can:admin')->group(function () {
-        Route::resource('users', UserController::class)->except(['show']);
-    });
+    // 2. Rute kustom untuk proses approval HARUS didefinisikan SEBELUM resource.
+    Route::post('/pengajuan-cuti/{pengajuanCuti}/proses', [PengajuanCutiController::class, 'update'])->name('cuti.proses');
+
+    // 3. Rute Resource untuk semua aksi di belakang layar.
+    Route::resource('pengajuan-cuti', PengajuanCutiController::class)->except([
+        'index', 
+        'create', 
+        'edit'    
+    ]);
+
+    Route::get('/verify/cuti-signature/{pengajuanCuti}', [PengajuanCutiController::class, 'verifySignature'])->name('cuti.signature.verify');
+
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/riwayat', [RiwayatSuratController::class, 'index'])->name('riwayat');
+    Route::get('/riwayat-surat/{pengajuanCuti}', [RiwayatSuratController::class, 'show'])->name('riwayat.show');
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

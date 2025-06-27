@@ -1,0 +1,133 @@
+.riwayat-container {
+    background-color: var(--white);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.riwayat-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.riwayat-table th, .riwayat-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.riwayat-table th {
+    background-color: var(--light-gray);
+    font-weight: 500;
+}
+
+.riwayat-table .text-center {
+    text-align: center;
+    padding: 2rem;
+    color: #6c757d;
+}
+
+.status-badge {
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: white;
+}
+
+/* Warna untuk setiap status */
+.status-badge.status-diajukan { background-color: var(--primary-color); }
+.status-badge.status-disetujui { background-color: #5cb85c; }
+.status-badge.status-ditolak { background-color: #d9534f; }
+.status-badge.status-kadaluwarsa { background-color: #6c757d; }
+
+.pagination-container {
+    margin-top: 1.5rem;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 2rem;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.detail-item strong {
+    font-weight: 500;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.detail-item span, .detail-item p {
+    font-size: 1rem;
+    margin: 0;
+}
+
+.detail-item.full-width, hr.full-width {
+    grid-column: 1 / -1;
+}
+
+/* Styling utama untuk overlay modal (latar belakang gelap transparan) */
+.modal {
+    display: none; /* Sembunyikan secara default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Aktifkan scroll jika kontennya sangat panjang */
+    background-color: rgba(0, 0, 0, 0.6);
+    padding-top: 50px;
+}
+
+/* Kontainer utama untuk konten modal */
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    border-radius: 12px;
+    width: 90%; /* Responsif untuk layar kecil */
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+    animation-name: slideDown;
+    animation-duration: 0.4s;
+    overflow-y: auto;
+}
+
+/* Class khusus untuk modal yang lebih lebar */
+.modal-content.wide {
+    max-width: 800px;
+}
+
+
+/* Animasi saat modal muncul */
+@keyframes slideDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Bagian Header Modal */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--medium-gray, #e9ecef);
+}
+
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-color, #2b2d42);
+    margin: 0;
+}

@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Providers;
-
+use App\Models\PengajuanCuti;
 use Illuminate\Support\ServiceProvider;
-
+use App\Observers\LogObserver;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -19,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        
+        PengajuanCuti::observe(LogObserver::class);
     }
 }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             // Tambahkan kolom baru setelah kolom 'aktif'
-            $table->timestamp('last_seen')->nullable()->after('aktif');
+            $table->timestamp('last_seen')->nullable()->after('active');
         });
     }
 

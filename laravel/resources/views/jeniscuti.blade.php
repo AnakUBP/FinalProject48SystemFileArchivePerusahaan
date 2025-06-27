@@ -4,13 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>jenisCuti - Sistem Karyawan</title>
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <title>Manajemen Jenis Cuti</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    {{-- FIX: Menyesuaikan path file CSS dan JS agar sesuai dengan standar Vite --}}
     @vite(['resources/css/dashboard.css', 'resources/js/dashboard.js', 'resources/css/jeniscuti.css', 'resources/js/jeniscuti.js'])
-
 </head>
 <script>
     window.jeniscutiRoutes = {
@@ -18,43 +16,28 @@
     };
 </script>
 
+
 <body>
     <div class="dashboard-container">
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <img src="img/logo.svg" alt="Logo Perusahaan" class="logo-perusahaan" />
+                <img src="/img/logo.svg" alt="Logo Perusahaan" class="logo-perusahaan" />
                 <p>Admin</p>
             </div>
             <nav class="sidebar-nav">
                 <ul>
-                    <li>
-                        <a href="{{ route('dashboard') }}">
-                            <i class="fas fa-tachometer-alt"></i> Dashboard
-                        </a>
+                    <li><a href="{{ route('dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="{{ route('template') }}"><i class="fas fa-file-word"></i> Template</a></li>
+                    <li class="active"><a href="{{ route('jeniscuti.index') }}"><i class="fas fa-calendar-alt"></i>
+                            Jenis Cuti</a></li>
+                    <li><a href="{{ route('user-profiles.index') }}"><i class="fas fa-users-cog"></i> User & Profil</a>
                     </li>
-                    <li>
-                        <a href="{{ route('template') }}">
-                            <i class="fas bi-filetype-docx"></i> Template
-                        </a>
+                    <li><a href="{{ route('manajemen-cuti') }}"><i class="fas fa-envelope-open-text"></i>Kelola Cuti</a>
                     </li>
-                    <li class="active">
-                        <a href="{{ route('jeniscuti.index') }}">
-                            <i class="fas bi-calendar2-event"></i> Jenis Cuti
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('UsersProfiles') }}">
-                            <i class="fas bi-calendar2-event"></i> Users
-                        </a>
-                    </li>
-                    @can('admin')
-                        <li>
-                            <a href="{{ route('users.index') }}">
-                                <i class="fas fa-users"></i> User Management
-                            </a>
-                        </li>
-                    @endcan
+                    <li><a href="{{ route('laporan') }}"><i class="fas fa-chart-bar"></i> Laporan</a></li>
+                    <li><a href="{{ route('riwayat') }}"><i class="fas fa-history"></i> Riwayat Surat</a></li>
+                    <li><a href="{{ route('log.aktivitas') }}"><i class="fas fa-history"></i> Log Aktivitas</a></li>
                 </ul>
             </nav>
         </aside>
@@ -115,10 +98,16 @@
                             @foreach($jenisCuti as $jenisCuti)
                                 <tr>
                                     <td>{{ $jenisCuti->nama }}</td>
-                                    @foreach($templates as $template)
-                                        <td>{{ $template->nama_template }}
-                                            (v{{ $template->versi }})</td>
-                                    @endforeach
+                                    <td>
+                                        {{-- Cek apakah jenis cuti ini MEMILIKI template --}}
+                                        @if($jenisCuti->templates)
+                                            {{-- Jika ada, tampilkan nama dan versinya --}}
+                                            {{ $jenisCuti->templates->nama_template }} (v{{ $jenisCuti->templates->versi }})
+                                        @else
+                                            {{-- Jika tidak ada, tampilkan strip atau pesan lain --}}
+                                            -
+                                        @endif
+                                    </td>
                                     <td>{{ $jenisCuti->keterangan ?? '-' }}</td>
                                     <td class="jenis-cuti-actions-cell">
                                         <button class="btn btn-primary"

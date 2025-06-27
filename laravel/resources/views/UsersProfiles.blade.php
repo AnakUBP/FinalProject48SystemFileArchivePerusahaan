@@ -30,27 +30,16 @@
             </div>
             <nav class="sidebar-nav">
                 <ul>
-                    <li>
-                        <a href="{{ route('dashboard') }}">
-                            <i class="fas fa-tachometer-alt"></i> Dashboard
-                        </a>
+                    <li><a href="{{ route('dashboard') }}"><i class="fas fa-tachometer-alt"></i>Dashboard</a></li>
+                    <li><a href="{{ route('template') }}"><i class="fas fa-file-word"></i> Template</a></li>
+                    <li><a href="{{ route('jeniscuti.index') }}"><i class="fas fa-calendar-alt"></i>Jenis Cuti</a></li>
+                    <li class="active"><a href="{{ route('user-profiles.index') }}"><i class="fas fa-users-cog"></i>
+                            User & Profil</a></li>
+                    <li><a href="{{ route('manajemen-cuti') }}"><i class="fas fa-envelope-open-text"></i>Kelola Cuti</a>
                     </li>
-                    <li>
-                        <a href="{{ route('template') }}">
-                            <i class="fas fa-file-word"></i> Template
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('jeniscuti.index') }}">
-                            <i class="fas fa-calendar-alt"></i> Jenis Cuti
-                        </a>
-                    </li>
-                    {{-- FIX: Menggunakan satu link yang benar untuk User Management --}}
-                    <li class="active">
-                        <a href="{{ route('user-profiles.index') }}">
-                            <i class="fas fa-users-cog"></i> User & Profil
-                        </a>
-                    </li>
+                    <li><a href="{{ route('laporan') }}"><i class="fas fa-chart-bar"></i> Laporan</a></li>
+                    <li><a href="{{ route('riwayat') }}"><i class="fas fa-history"></i> Riwayat Surat</a></li>
+                    <li><a href="{{ route('log.aktivitas') }}"><i class="fas fa-history"></i> Log Aktivitas</a></li>
                 </ul>
             </nav>
         </aside>
@@ -69,9 +58,7 @@
                             <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="dropdown-content">
-                            {{-- FIX: Link 'Profile' sekarang membuka modal edit untuk user yang login --}}
-                            <a href="#" onclick="editModal({{ Auth::id() }})"><i class="fas fa-user-edit"></i> Edit
-                                Profil Saya</a>
+                            <a href="{{ route('profile.show') }}"><i class="fas fa-user"></i> Profile</a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit"><i class="fas fa-sign-out-alt"></i> Logout</button>
@@ -91,10 +78,52 @@
                     <h1>Manajemen User & Profil</h1>
                 </div>
                 <div class="user-profiles-container">
-                    {{-- FIX: Menghapus div header yang berulang/duplikat --}}
-                    <div class="user-profiles-header">
+                    <div class="user-profiles-header ">
                         <button class="btn btn-primary" onclick="openup()">
                             <i class="fas fa-plus"></i> Tambah User</button>
+                    </div>
+                    <div class="filter-header">
+                        <form action="{{ route('user-profiles.index') }}" method="GET" class="filter-form">
+
+                            <div class="form-group">
+                                <input type="text" name="search" class="form-control" placeholder="Cari nama, email..."
+                                    value="{{ $filters['search'] ?? '' }}">
+                            </div>
+
+                            <div class="form-group">
+                                <select name="role" class="form-control">
+                                    <option value="">Semua Role</option>
+                                    <option value="admin" {{ ($filters['role'] ?? '') == 'admin' ? 'selected' : '' }}>
+                                        Admin</option>
+                                    <option value="karyawan" {{ ($filters['role'] ?? '') == 'karyawan' ? 'selected' : '' }}>Karyawan</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <select name="online_status" class="form-control">
+                                    <option value="">Semua Status</option>
+                                    <option value="online" {{ ($filters['online_status'] ?? '') == 'online' ? 'selected' : '' }}>Online</option>
+                                    <option value="offline" {{ ($filters['online_status'] ?? '') == 'offline' ? 'selected' : '' }}>Offline</option>
+                                    <option value="nonaktif" {{ ($filters['online_status'] ?? '') == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <select name="sort" class="form-control">
+                                    <option value="terbaru" {{ ($filters['sort'] ?? 'terbaru') == 'terbaru' ? 'selected' : '' }}>Terbaru</option>
+                                    <option value="terlama" {{ ($filters['sort'] ?? '') == 'terlama' ? 'selected' : '' }}>
+                                        Terlama</option>
+                                    <option value="nama_asc" {{ ($filters['sort'] ?? '') == 'nama_asc' ? 'selected' : '' }}>Nama A-Z</option>
+                                    <option value="nama_desc" {{ ($filters['sort'] ?? '') == 'nama_desc' ? 'selected' : '' }}>Nama Z-A</option>
+                                </select>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-filter"></i></button>
+                                <a href="{{ route('user-profiles.index') }}" class="btn btn-secondary"><i
+                                        class="fas fa-sync-alt"></i></a>
+                            </div>
+                        </form>
                     </div>
 
                     <table class="user-profiles-table">
@@ -104,7 +133,7 @@
                                 <th>Jabatan</th>
                                 <th>Role</th>
                                 <th>Status</th>
-                                <th>Tanggal Dibuat</th>
+                                <th>Sisa Cuti</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -133,16 +162,15 @@
                                             <span class="status-badge status-offline">Offline</span>
                                         @endif
                                     </td>
-                                    <td>{{ $user->created_at->format('d M Y') }}</td>
+                                    <td>{{ $user->profile->sisa_kuota_cuti ?? 'N/A' }}</td>
                                     <td class="user-profiles-actions-cell">
-                                        <button class="action-btn edit-btn" onclick="editup({{ $user->id }})"><i
+                                        <button class="btn btn-primary" onclick="editup({{ $user->id }})"><i
                                                 class="fas fa-edit"></i></button>
                                         <form action="{{ route('user-profiles.destroy', $user->id) }}" method="POST"
                                             style="display:inline;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="action-btn view-btn"
-                                                style="background-color: var(--accent-color);"
+                                            <button type="submit" class="btn btn-secondary"
                                                 onclick="return confirm('Anda yakin ingin menghapus user ini?')"><i
                                                     class="fas fa-trash"></i></button>
                                         </form>
@@ -193,9 +221,12 @@
                                 <option value="admin">Admin</option>
                             </select>
                         </div>
-                        <div class="form-group form-check">
-                            <input type="checkbox" id="aktif" name="aktif" class="form-check-input">
-                            <label for="aktif" class="form-check-label">Akun Aktif</label>
+                        <div class="form-group">
+                            <label>Status Akun</label>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="active" name="active">
+                                <span class="slider"></span>
+                            </label>
                         </div>
                     </div>
                     <div class="form-section">
@@ -208,8 +239,17 @@
                                 onchange="previewImage(event);">
                         </div>
                         <div class="form-group">
+                            <label for="kuota_tambahan">Tambah Kuota (Opsional)</label>
+                            <p style="margin-top: 5px; margin-bottom: 10px;">Sisa Kuota Saat Ini: <strong id="current_quota_display">0</strong></p>
+                            <input type="number" id="kuota_tambahan" name="kuota_tambahan" class="form-control" placeholder="Contoh: 1 (untuk menambah) atau -1 (untuk mengurangi)">
+                        </div>
+                        <div class="form-group">
                             <label for="nama_lengkap">Nama Lengkap</label>
                             <input type="text" id="nama_lengkap" name="nama_lengkap" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="alamat">Alamat</label>
+                            <input type="text" id="alamat" name="alamat" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="jabatan">Jabatan</label>

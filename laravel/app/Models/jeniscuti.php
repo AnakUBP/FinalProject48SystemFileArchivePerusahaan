@@ -19,6 +19,6 @@ class JenisCuti extends Model
     ];
     public function templates()
     {
-        return $this->belongsTo(Templates::class)->withDefault();
+        return $this->belongsTo(Templates::class, 'template_id');  
     }
 }

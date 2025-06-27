@@ -1,0 +1,138 @@
+/* Mengimpor font Poppins dari Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Reset dan pengaturan dasar untuk body */
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f5f8;
+    color: #333;
+}
+
+/* Kontainer utama yang menengahkan kartu di layar */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Kartu utama yang membungkus konten */
+.auth-card {
+    background-color: white;
+    padding: 2.5rem 3rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    position: relative;
+}
+
+/* Tombol kembali (panah kiri) */
+.back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 1.5rem;
+    color: #adb5bd;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.back-button:hover {
+    color: #333;
+}
+
+/* Judul utama (e.g., "Forgot Password") */
+.auth-title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+}
+
+/* Sub-judul atau deskripsi di bawah judul utama */
+.auth-subtitle {
+    color: #6c757d;
+    margin-bottom: 2rem;
+}
+
+/* Form */
+.auth-form {
+    text-align: left;
+}
+
+/* Grup form (label + input) */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+/* Input field */
+.form-control {
+    width: 92%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #485aff;
+    box-shadow: 0 0 0 3px rgba(72, 90, 255, 0.15);
+}
+
+/* Tombol utama */
+.btn.btn-primary {
+    width: 100%;
+    padding: 0.9rem;
+    border: none;
+    background-color: #485aff;
+    color: white;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn.btn-primary:hover {
+    background-color: #3a4ad8;
+}
+
+/* Styling untuk pesan error validasi */
+.invalid-feedback {
+    color: #dc3545;
+    font-size: 0.875em;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.form-control.is-invalid {
+    border-color: #dc3545;
+}
+
+/* Styling untuk pesan sukses */
+.alert.alert-success {
+    background-color: #d1f7e8;
+    color: #0d694b;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+/* Styling untuk halaman konfirmasi (Check Your Mail) */
+.confirmation-icon {
+    font-size: 4rem;
+    color: #485aff;
+    margin-bottom: 1rem;
+}

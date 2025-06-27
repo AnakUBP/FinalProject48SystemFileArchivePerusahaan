@@ -9,19 +9,26 @@ class Profile extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     * PASTIKAN SEMUA KOLOM INI ADA.
+     */
     protected $fillable = [
         'users_id',
         'nama_lengkap',
-        'alamat',
-        'telepon',
-        'tanggal_lahir',
         'jabatan',
-        'jenis_kelamin',
-        'foto',
+        'telepon',
+        'alamat',
+        'tanda_tangan',
+        // Tambahkan sisa_kuota_cuti jika Anda mengelolanya di sini juga
+        'sisa_kuota_cuti', 
     ];
 
+    /**
+     * Relasi ke model Users.
+     */
     public function user()
     {
-        return $this->belongsTo(Users::class);
+        return $this->belongsTo(Users::class, 'users_id');
     }
 }

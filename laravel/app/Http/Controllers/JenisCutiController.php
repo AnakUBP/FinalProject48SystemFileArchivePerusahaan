@@ -2,9 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityLog;
+use Illuminate\Support\Facades\Auth;
 use App\Models\JenisCuti;
 use App\Models\Templates;
 use Illuminate\Http\Request;
+
+function logActivity($action, $description, $model = null)
+{
+    ActivityLog::create([
+        'user_id' => Auth::id(),
+        'action' => $action,
+        'description' => $description,
+        'loggable_id' => $model?->id,
+        'loggable_type' => $model ? get_class($model) : null,
+    ]);
+}
+
 
 class JenisCutiController extends Controller
 {
@@ -43,6 +57,9 @@ class JenisCutiController extends Controller
                 'keterangan' => $validatedData['keterangan'],
                 // Cek apakah checkbox 'is_active' dicentang atau tidak
             ]);
+
+            $jenisCutiBaru = JenisCuti::latest()->first(); // Ambil data terakhir
+            logActivity('tambah_jenis_cuti', 'Menambahkan jenis cuti: ' . $jenisCutiBaru->nama, $jenisCutiBaru);
 
             return redirect()->route('jeniscuti.index')
                 ->with('success', 'Jenis cuti berhasil ditambahkan.');
@@ -84,6 +101,8 @@ class JenisCutiController extends Controller
 
             // Melakukan update pada data yang ditemukan oleh Route Model Binding
             $jeniscuti->update($data);
+            logActivity('ubah_jenis_cuti', 'Memperbarui jenis cuti: ' . $jeniscuti->nama, $jeniscuti);
+
 
             return redirect()->route('jeniscuti.index')
                 ->with('success', 'Jenis cuti berhasil diperbarui.');

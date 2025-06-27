@@ -36,7 +36,7 @@
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" required>
                     <div class="forgot">
-                        <a href="#">Forget Password?</a>
+                        <a href="<?php echo e(route('password.request')); ?>">Forget Password?</a>
                     </div>
                     <button type="submit" class="btn-login">Masuk</button>
                 </form>

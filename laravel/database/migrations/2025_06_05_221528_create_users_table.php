@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->string('email')->unique();
             $table->string('password');
             $table->enum('role', ['admin', 'karyawan']);
-            $table->boolean('aktif')->default(true); // Kolom baru
+            $table->boolean('active')->default(true); // Kolom baru
             $table->timestamps();
         });
     }

@@ -4,33 +4,59 @@
     border-radius: 10px;
     padding: 1.5rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    margin-top: 1.5rem;
 }
 
 /* Header di atas tabel (untuk tombol 'Tambah User') */
 .user-profiles-header {
     display: flex;
-    justify-content: center; /* Tombol di kanan */
+    justify-content: center;
     align-items: center;
-    margin-bottom: 1.5rem;
 }
-
+.user-profiles-actions {
+    display: flex;
+    gap: 1rem;
+}
 /* Tabel User */
 .user-profiles-table {
+    display: grid;
+    /* Membuat 5 kolom dengan lebar yang sama (1fr = 1 fraksi ruang yang tersedia) */
+    grid-template-columns: repeat(6, 1fr);
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: collapse; 
+    margin-top: 1.5rem;
+    border: 1px solid var(--medium-gray);
+    border-radius: 8px;
+    overflow: hidden; /* Agar border-radius terlihat */
 }
 
-.user-profiles-table th, .user-profiles-table td {
+/* KUNCI UTAMA: "Meleburkan" elemen perantara agar sel (th/td) menjadi anak langsung dari grid */
+.user-profiles-table thead, .user-profiles-table tbody, .user-profiles-table tr {
+    display: contents;
+}
+
+/* Styling untuk semua sel header (th) */
+.user-profiles-table th {
     padding: 1rem;
     text-align: left;
-    border-bottom: 1px solid var(--medium-gray);
-    vertical-align: middle;
-}
-
-.user-profiles-table th {
     background-color: var(--light-gray);
     font-weight: 500;
+    color: var(--text-color);
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+/* Styling untuk semua sel data (td) */
+.user-profiles-table td {
+    padding: 1rem;
+    text-align: left;
+    background-color: var(--white);
+    border-bottom: 1px solid var(--medium-gray);
+    display: flex; /* Menggunakan flex untuk alignment konten di dalam sel */
+    align-items: center;
+}
+
+/* Menghilangkan border bawah pada baris terakhir */
+.user-profiles-table tr:last-child td {
+    border-bottom: none;
 }
 
 /* Styling untuk info user di dalam sel tabel */
@@ -99,6 +125,32 @@
 .user-profiles-actions-cell {
     display: flex;
     gap: 0.5rem;
+}
+
+/* Modal Styles untuk User & Profil */
+.modal-user-profile {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow-y: auto; /* Memungkinkan modal itu sendiri untuk scroll jika viewport sangat pendek */
+}
+
+.modal-user-profile-content {
+    background-color: var(--white);
+    margin: 5vh auto;
+    padding: 0; /* Padding akan diatur di header, body, dan footer */
+    border-radius: 10px;
+    width: 60%;
+    max-width: 800px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh; /* Batasi tinggi modal */
 }
 
 .modal-header {

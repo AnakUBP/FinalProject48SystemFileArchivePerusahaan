@@ -1,0 +1,116 @@
+/* Styling utama untuk kartu profil */
+.profile-view-card {
+    background-color: var(--white);
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 900px; /* Batasi lebar kartu agar nyaman dibaca */
+    margin: 0 auto; /* Posisikan kartu di tengah halaman */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* Header Profil: Avatar dan Nama */
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.profile-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--light-gray);
+}
+
+.profile-name-role h2 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.profile-name-role p {
+    margin: 0.25rem 0 0.5rem;
+    font-size: 1.1rem;
+    color: var(--secondary-color);
+}
+
+.profile-name-role .badge {
+    font-size: 0.8rem;
+}
+
+/* Garis pemisah */
+.profile-divider {
+    border: none;
+    height: 1px;
+    background-color: var(--medium-gray);
+    margin: 2rem 0;
+}
+
+/* Grid untuk detail informasi */
+.profile-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Membuat item alamat membentang penuh */
+.detail-item.full-width {
+    grid-column: 1 / -1;
+}
+
+.detail-label {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.detail-value {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+/* Memberi warna khusus untuk kuota */
+.detail-value.quota {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* Styling untuk pesan 'Belum di-upload' */
+.detail-value-muted {
+    font-size: 1rem;
+    font-style: italic;
+    color: #6c757d;
+}
+
+/* Pratinjau gambar tanda tangan */
+.signature-preview {
+    max-width: 180px;
+    height: auto;
+    border: 1px solid var(--medium-gray);
+    padding: 0.5rem;
+    border-radius: 8px;
+    background-color: var(--light-gray);
+    margin-top: 0.25rem;
+}
+
+/* Responsif untuk layar kecil */
+@media (max-width: 768px) {
+    .profile-details-grid {
+        grid-template-columns: 1fr; /* Tumpuk kolom di layar kecil */
+    }
+
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+}

@@ -1,26 +1,101 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\ActivityLog;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Users;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+function logActivity($action, $description, $model = null)
+{
+    ActivityLog::create([
+        'user_id' => Auth::id(),
+        'action' => $action,
+        'description' => $description,
+        'loggable_id' => $model?->id,
+        'loggable_type' => $model ? get_class($model) : null,
+    ]);
+}
 
 class UsersProfileController extends Controller
 {
     /**
      * Menampilkan halaman utama untuk manajemen user dan profil.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Ambil semua user beserta relasi profilnya, urutkan dari yang terbaru.
-        $users = Users::with('profile')->latest()->get();
-        // Kembalikan view dan kirim data users.
-        return view('UsersProfiles', compact('users'));
+        $query = Users::with('profile');
+
+        // 1. Logika PENCARIAN
+        // Jika ada input 'search', cari di beberapa kolom
+        if ($request->filled('search')) {
+            $searchTerm = '%' . $request->search . '%';
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('name', 'like', $searchTerm)
+                  ->orWhere('email', 'like', $searchTerm)
+                  ->orWhereHas('profile', function ($profileQuery) use ($searchTerm) {
+                      $profileQuery->where('nama_lengkap', 'like', $searchTerm);
+                  });
+            });
+        }
+
+        // 2. Logika FILTER (SELEKSI) ROLE
+        if ($request->filled('role')) {
+            $query->where('role', $request->role);
+        }
+
+        // 3. Logika FILTER (SELEKSI) STATUS
+        if ($request->filled('online_status')) {
+            switch ($request->online_status) {
+                case 'online':
+                    // User dianggap online jika aktif dan aktivitas terakhir < 5 menit
+                    $query->where('active', true)->where('last_seen', '>=', now()->subMinutes(5));
+                    break;
+                case 'offline':
+                    // User dianggap offline jika aktif TAPI aktivitas terakhir > 5 menit ATAU belum pernah login (last_seen is null)
+                    $query->where('active', true)->where(function ($q) {
+                        $q->where('last_seen', '<', now()->subMinutes(5))
+                          ->orWhereNull('last_seen');
+                    });
+                    break;
+                case 'nonaktif':
+                    // User yang akunnya dinonaktifkan oleh admin
+                    $query->where('active', false);
+                    break;
+            }
+        }
+
+        // 4. Logika PENGURUTAN (SORT)
+        $sortBy = $request->input('sort', 'terbaru');
+        switch ($sortBy) {
+            case 'nama_asc':
+                $query->orderBy('name', 'asc');
+                break;
+            case 'nama_desc':
+                $query->orderBy('name', 'desc');
+                break;
+            case 'terlama':
+                $query->orderBy('created_at', 'asc');
+                break;
+            case 'terbaru':
+            default:
+                $query->orderBy('created_at', 'desc');
+                break;
+        }
+
+        // Eksekusi query
+        $users = $query->get();
+
+        // Kirim data ke view
+        return view('UsersProfiles', [
+            'users' => $users,
+            'filters' => $request->only(['search', 'role', 'status', 'sort'])
+        ]);
     }
+
 
     /**
      * Menyimpan user baru beserta profilnya.
@@ -37,6 +112,7 @@ class UsersProfileController extends Controller
                 'nama_lengkap'  => 'nullable|string|max:255',
                 'jabatan'       => 'nullable|string|max:100',
                 'telepon'       => 'nullable|string|max:15',
+                'alamat'        => 'nullable|string', // FIX: Menambahkan validasi untuk alamat
                 'jenis_kelamin' => ['required', Rule::in(['pria', 'wanita'])],
                 'foto'          => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
@@ -50,7 +126,7 @@ class UsersProfileController extends Controller
                     'email'     => $validatedData['email'],
                     'password'  => $validatedData['password'], // Di-hash otomatis oleh mutator di model.
                     'role'      => $validatedData['role'],
-                    'aktif'     => $request->has('aktif'),
+                    'active'     => $request->has('active'),
                 ]);
 
                 // Tahap 2: Siapkan dan simpan data ke tabel 'profiles'.
@@ -59,6 +135,7 @@ class UsersProfileController extends Controller
                     'nama_lengkap'  => $validatedData['nama_lengkap'],
                     'jabatan'       => $validatedData['jabatan'],
                     'telepon'       => $validatedData['telepon'],
+                    'alamat'        => $validatedData['alamat'], // FIX: Menambahkan alamat ke data profil
                     'jenis_kelamin' => $validatedData['jenis_kelamin'],
                 ];
 
@@ -69,6 +146,8 @@ class UsersProfileController extends Controller
                 }
 
                 Profile::create($profileData);
+                logActivity('tambah_user', 'Menambahkan user: ' . $validatedData['name'], $user);
+
             });
 
             // 3. Kembalikan ke halaman daftar dengan pesan sukses.
@@ -95,8 +174,10 @@ class UsersProfileController extends Controller
                 'nama_lengkap'  => 'nullable|string|max:255',
                 'jabatan'       => 'nullable|string|max:100',
                 'telepon'       => 'nullable|string|max:15',
+                'alamat'        => 'nullable|string', // FIX: Menambahkan validasi untuk alamat
                 'jenis_kelamin' => ['required', Rule::in(['pria', 'wanita'])],
                 'foto'          => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'kuota_tambahan'  => 'nullable|integer',
             ]);
 
             DB::transaction(function () use ($request, $userProfile, $validatedData) {
@@ -105,7 +186,7 @@ class UsersProfileController extends Controller
                     'name'      => $validatedData['name'],
                     'email'     => $validatedData['email'],
                     'role'      => $validatedData['role'],
-                    'aktif'     => $request->has('aktif'),
+                    'active'     => $request->has('active'),
                 ];
                 // Hanya update password jika diisi.
                 if (!empty($validatedData['password'])) {
@@ -113,8 +194,9 @@ class UsersProfileController extends Controller
                 }
                 $userProfile->update($userData);
 
+
                 // Update atau buat data di tabel 'profiles'.
-                $profileData = $request->only(['nama_lengkap', 'jabatan', 'telepon', 'jenis_kelamin']);
+                $profileData = $request->only(['nama_lengkap', 'jabatan', 'telepon', 'alamat', 'jenis_kelamin']); // FIX: Menambahkan alamat
 
                 if ($request->hasFile('foto')) {
                     // Hapus foto lama sebelum upload yang baru.
@@ -124,8 +206,22 @@ class UsersProfileController extends Controller
                     $profileData['foto'] = $request->file('foto')->store('profiles', 'public');
                 }
 
+                $userProfile->profile()->updateOrCreate(
+                    ['users_id' => $userProfile->id], // Kunci untuk mencari
+                    $profileData                      // Data untuk diupdate atau dibuat
+                );
+
+                // 4. Setelah profil dijamin ada, baru tambahkan kuota.
+                if ($request->filled('kuota_tambahan')) {
+                    // FIX: Ambil ulang objek profil yang valid dari user untuk memastikan itu adalah model.
+                    $profileToUpdate = $userProfile->profile;
+                    if ($profileToUpdate) {
+                        $profileToUpdate->increment('sisa_kuota_cuti', (int) $request->input('kuota_tambahan'));
+                    }
+                }
                 // updateOrCreate: update jika profil ada, buat jika tidak ada.
                 $userProfile->profile()->updateOrCreate(['users_id' => $userProfile->id], $profileData);
+                logActivity('ubah_user', 'Memperbarui user: ' . $userProfile->name, $userProfile);
             });
 
             return redirect()->route('user-profiles.index')->with('success', 'Data user berhasil diperbarui.');
@@ -153,7 +249,7 @@ class UsersProfileController extends Controller
 
             // Hapus record user. Profil akan terhapus otomatis karena 'onDelete('cascade')'.
             $userProfile->delete();
-
+            logActivity('hapus_user', 'Menghapus user: ' . $userProfile->name, $userProfile);
             return redirect()->route('user-profiles.index')->with('success', 'User berhasil dihapus.');
 
         } catch (\Exception $e) {

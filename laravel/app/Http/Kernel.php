@@ -70,4 +70,10 @@ class Kernel extends HttpKernel
         // ...
         'role' => \App\Http\Middleware\CheckRole::class,
     ];
+
+    protected function schedule(Schedule $schedule): void
+    {
+        // Menjalankan perintah setiap hari Senin pada pukul 01:00 dini hari.
+        $schedule->command('kuota:tambah-mingguan')->weeklyOn(1, '1:00');
+    }
 }

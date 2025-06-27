@@ -19,21 +19,49 @@
     gap: 1rem;
 }
 
+/* Tabel User */
 .jenis-cuti-table {
+    display: grid;
+    /* Membuat 5 kolom dengan lebar yang sama (1fr = 1 fraksi ruang yang tersedia) */
+    grid-template-columns: repeat(4, 1fr);
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: collapse; 
+    margin-top: 1.5rem;
+    border: 1px solid var(--medium-gray);
+    border-radius: 8px;
+    overflow: hidden; /* Agar border-radius terlihat */
 }
 
-.jenis-cuti-table th, .jenis-cuti-table td {
+/* KUNCI UTAMA: "Meleburkan" elemen perantara agar sel (th/td) menjadi anak langsung dari grid */
+.jenis-cuti-table thead, .jenis-cuti-table tbody, .jenis-cuti-table tr {
+    display: contents;
+}
+
+/* Styling untuk semua sel header (th) */
+.jenis-cuti-table th {
     padding: 1rem;
     text-align: left;
+    background-color: var(--light-gray);
+    font-weight: 500;
+    color: var(--text-color);
     border-bottom: 1px solid var(--medium-gray);
 }
 
-.jenis-cuti-table th {
-    background-color: var(--light-gray);
-    font-weight: 500;
+/* Styling untuk semua sel data (td) */
+.jenis-cuti-table td {
+    padding: 1rem;
+    text-align: left;
+    background-color: var(--white);
+    border-bottom: 1px solid var(--medium-gray);
+    display: flex; /* Menggunakan flex untuk alignment konten di dalam sel */
+    align-items: center;
 }
+
+/* Menghilangkan border bawah pada baris terakhir */
+.jenis-cuti-table tr:last-child td {
+    border-bottom: none;
+}
+
 
 .template-badge {
     background-color: rgba(67, 97, 238, 0.1);

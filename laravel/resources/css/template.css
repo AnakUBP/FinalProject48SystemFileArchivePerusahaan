@@ -17,42 +17,73 @@
     display: flex;
     gap: 1rem;
 }
-
+/* Mengatur .template-table sebagai Grid Container Utama */
 .template-table {
+    display: grid;
+    /* Membuat 5 kolom dengan lebar yang sama (1fr = 1 fraksi ruang yang tersedia) */
+    grid-template-columns: repeat(5, 1fr);
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: collapse; 
+    margin-top: 1.5rem;
+    border: 1px solid var(--medium-gray);
+    border-radius: 8px;
+    overflow: hidden; /* Agar border-radius terlihat */
 }
 
-.template-table th, .template-table td {
+/* KUNCI UTAMA: "Meleburkan" elemen perantara agar sel (th/td) menjadi anak langsung dari grid */
+.template-table thead, .template-table tbody, .template-table tr {
+    display: contents;
+}
+
+/* Styling untuk semua sel header (th) */
+.template-table th {
     padding: 1rem;
     text-align: left;
+    background-color: var(--light-gray);
+    font-weight: 500;
+    color: var(--text-color);
     border-bottom: 1px solid var(--medium-gray);
 }
 
-.template-table th {
-    background-color: var(--light-gray);
-    font-weight: 500;
+/* Styling untuk semua sel data (td) */
+.template-table td {
+    padding: 1rem;
+    text-align: left;
+    background-color: var(--white);
+    border-bottom: 1px solid var(--medium-gray);
+    display: flex; /* Menggunakan flex untuk alignment konten di dalam sel */
+    align-items: center;
 }
 
+/* Menghilangkan border bawah pada baris terakhir */
+.template-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Styling dasar untuk badge status */
 .template-status {
-    padding: 0.5rem 1rem;
+    padding: 0.4rem 0.8rem;
     border-radius: 20px;
     font-size: 0.8rem;
     font-weight: 500;
+    display: inline-block;
 }
 
+/* Warna untuk status 'Aktif' */
 .status-active {
     background-color: rgba(67, 97, 238, 0.1);
     color: var(--primary-color);
 }
 
+/* Warna untuk status 'Nonaktif' */
 .status-inactive {
-    background-color: rgba(233, 236, 239, 0.5);
-    color: var(--dark-gray);
+    background-color: #e9ecef;
+    color: #495057;
 }
 
+/* Styling untuk sel yang berisi tombol-tombol aksi */
 .template-actions-cell {
     display: flex;
     gap: 0.5rem;
+    align-items: center;
 }
-
