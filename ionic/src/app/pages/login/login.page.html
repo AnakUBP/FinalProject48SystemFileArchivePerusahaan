@@ -1,0 +1,45 @@
+<ion-content [fullscreen]="true" class="login-page">
+  
+  <!-- Bagian Header Visual (Biru) -->
+  <div class="login-header">
+    <img src="assets/icon/logo.svg" alt="Logo" class="logo-image" />
+  </div>
+  <!-- Bagian Form (Putih) -->
+  <div class="login-form">
+    <div class="form-container">
+      <ion-title class="login-title">Login</ion-title>
+
+      <!-- Form Input -->
+      <form (ngSubmit)="login()">
+        <ion-list class="input-list">
+          <ion-item lines="full">
+            <ion-label position="floating">Email</ion-label>
+            <ion-input type="email" [(ngModel)]="credentials.email" name="email" required></ion-input>
+          </ion-item>
+          <ion-item lines="full">
+            <ion-label position="floating">Password</ion-label>
+            <ion-input type="password" [(ngModel)]="credentials.password" name="password" required></ion-input>
+          </ion-item>
+        </ion-list>
+        
+        <!-- Link Lupa Password -->
+        <div class="forgot-password">
+          <a routerLink="/forgot-password">Forget Password?</a>
+        </div>
+
+        <!-- Tombol Submit -->
+        <ion-button type="submit" expand="block" class="submit-btn">
+          Submit
+        </ion-button>
+      </form>
+    </div>
+  </div>
+
+</ion-content>
+
+<!-- Footer Bawah (Biru) -->
+<ion-footer class="ion-no-border">
+  <ion-toolbar class="footer-toolbar">
+    <ion-title class="footer-title">Lettera</ion-title>
+  </ion-toolbar>
+</ion-footer>

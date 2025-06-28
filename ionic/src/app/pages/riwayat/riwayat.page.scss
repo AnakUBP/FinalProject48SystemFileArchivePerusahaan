@@ -1,0 +1,114 @@
+ion-toolbar {
+    --background: #f7f7f7;
+    --color: #485aff;
+}
+
+ion-searchbar {
+    --background: #e9ecef;
+    --color: black;
+}
+ion-content {
+    --background: #f7f7f7;
+}
+
+ion-segment {
+    margin: 8px 16px;
+    border-radius: 8px;
+    background: #e9ecef;
+
+    ion-segment-button {
+        --indicator-color: transparent; /* Menghilangkan garis bawah default */
+        --color: #6c757d; /* Warna teks default (abu-abu) */
+        --color-checked: var(--ion-color-primary); /* Warna teks biru saat aktif */
+        font-weight: 500;
+        transition: all 0.2s ease-in-out;
+
+        /* Memberi efek latar belakang pada tombol yang aktif */
+        &.segment-button-checked {
+            font-weight: 600;
+            background: #ffffff;
+            border-radius: 6px;
+            margin: 2px;
+        }
+    }
+}
+
+.history-list {
+    background: transparent;
+    padding: 8px 16px;
+}
+
+.history-card {
+    margin: 0 0 16px;
+    border-radius: 12px;
+    background-color: #e9ecef;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-left: 5px solid; /* Garis status di kiri */
+    
+    &.status-border-diajukan { border-left-color: var(--ion-color-primary); }
+    &.status-border-disetujui { border-left-color: var(--ion-color-success); }
+    &.status-border-ditolak { border-left-color: var(--ion-color-danger); }
+    &.status-border-kadaluwarsa { border-left-color: var(--ion-color-medium); }
+}
+
+ion-card-header {
+    padding-bottom: 8px;
+    color: #6c757d;
+}
+
+ion-card-subtitle {
+    font-weight: 500;
+    color: #6c757d;
+}
+
+ion-card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #6c757d;
+}
+
+ion-card-content {
+    padding-top: 0;
+    .card-content-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+    .reason {
+        color: #6c757d;
+        margin: 0;
+        white-space: normal;
+    }
+    .status-section {
+        margin-top: 12px;
+        flex-shrink: 0;
+    }
+}
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: white;
+
+    &.status-diajukan { background: var(--ion-color-primary); }
+    &.status-disetujui { background: var(--ion-color-success); }
+    &.status-ditolak { background: var(--ion-color-danger); }
+    &.status-kadaluwarsa { background: var(--ion-color-medium); }
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #888;
+    margin-top: 20vh;
+
+    ion-icon {
+        font-size: 4rem;
+        margin-bottom: 16px;
+    }
+    h3 {
+        font-weight: bold;
+    }
+}

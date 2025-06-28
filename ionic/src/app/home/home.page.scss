@@ -1,0 +1,161 @@
+/* Struktur layout utama menggunakan CSS Grid.
+  Ini membutuhkan sebuah div pembungkus (misal: .home-page-grid) 
+  di dalam <ion-content>.
+*/
+.home-page-grid {
+    display: grid;
+    grid-template-rows: auto auto auto 1fr;
+    height: 100%;
+    overflow-y: auto;
+}
+
+ion-content {
+    --background: #f4f5f8; // Warna latar belakang abu-abu muda
+}
+
+/* === BAGIAN HEADER DENGAN CSS GRID === */
+.custom-header {
+    position: sticky;
+    background: white; // Warna biru
+    color: #485aff;
+    z-index: 10;
+    top: 0;
+    padding-bottom: 16px;
+    padding-top: var(--ion-safe-area-top); // Memberi jarak aman di atas
+}
+
+.header-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    align-items: center;
+    width: 100%;
+}
+
+.menu-button {
+    height: 125%;
+    width: 80%;
+    align-content: center;
+    background-color: #485aff;
+    --color: white;
+}
+
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-content: center;
+    align-items: center;
+    margin-right: 10%;
+    margin-top: 10%;
+
+    h3 {
+        margin: 8px 0 0 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+    p {
+        font-size: smaller;
+    }
+    ion-avatar {
+        width: 64px;
+        height: 64px;
+        border: 3px solid rgba(255, 255, 255, 0.5);
+    }
+}
+/* === AKHIR BAGIAN HEADER === */
+
+.calendar-strip-container {
+    padding: 10px;
+    overflow-x: auto; /* Agar bisa di-scroll horizontal */
+    background: white;
+    margin: 10px 16px 0 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.calendar-strip {
+    display: flex;
+    justify-content: space-between;
+}
+
+.date-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    .day-name {
+        font-size: 0.7rem;
+        color: #888;
+        text-transform: uppercase;
+    }
+    .day-number {
+        color: #888;
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+    &.active {
+        background-color: #485aff;
+
+        .day-number {
+            color: white;
+        }
+        .day-name {
+            color: rgba(255, 255, 255, 0.8);
+        }
+    }
+}
+
+.list-header {
+    margin-bottom: 15px;
+    h3 {
+        border-radius: 6px;
+        background-color: #485aff;
+        text-align: center;
+        padding: 10px;
+        margin: 10px 16px 0 16px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: white;
+    }
+}
+
+/* FIX: Wrapper untuk list agar bisa di-scroll di dalam grid area */
+
+.cuti-list {
+    background: transparent;
+    padding: 0 16px;
+    ion-item {
+        --background: white;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        h2 {
+            font-weight: bold;
+        }
+        p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .status-text {
+            font-weight: 500;
+            &.status-disetujui { color: var(--ion-color-success); }
+            &.status-ditolak { color: var(--ion-color-danger); }
+            &.status-diajukan { color: var(--ion-color-primary); }
+        }
+        .status-icon {
+            font-size: 2rem;
+        }
+    }
+}
+
+ion-fab-button {
+    position: fixed;
+    --background:#485aff;
+    bottom: 2%;
+    --box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}

@@ -1,0 +1,61 @@
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <!-- KUNCI: Tambahkan div pembungkus ini -->
+      <div class="home-page-grid">
+        <div class="custom-header">
+          <div class="header-content">
+            <ion-menu-button fill="clear" class="menu-button">
+              <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+            </ion-menu-button>
+            <div class="profile-info" [routerLink]="['/profile']" tappable>
+              <ion-avatar>
+                <!-- Gambar profil akan diisi dari data user -->
+                <img [src]="currentUser?.profile?.foto ? getFullImageUrl(currentUser.profile.foto) : 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
+              </ion-avatar>
+              <h3>{{ currentUser?.profile?.nama_lengkap || currentUser?.name }}</h3>
+              <ion-label>
+                <p class="quota-text">Kuota cuti: {{ currentUser?.profile?.sisa_kuota_cuti ?? 0 }}</p>
+              </ion-label>
+            </div>
+          </div>
+        </div>
+        <div class="list-header">
+          <div class="calendar-strip-container" [routerLink]="['/calendar']" tappable>
+            <div class="calendar-strip">
+              <div *ngFor="let date of weekDates" class="date-item" [class.active]="isToday(date)">
+                <span class="day-name">{{ date | date:'EEE' }}</span>
+                <span class="day-number">{{ date | date:'d' }}</span>
+              </div>
+            </div>
+          </div>
+        <!-- FIX: Teks ini sekarang dinamis -->
+        <h3>{{ currentMonthYear }}</h3>
+      </div>
+    <ion-list class="cuti-list">
+      <ion-item *ngFor="let item of pengajuanList" lines="none" [routerLink]="['/surat-detail', item.id]" button>
+        <ion-avatar slot="start">
+          <img [src]="item.user?.profile?.foto ? getFullImageUrl(item.user.profile.foto) : 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
+        </ion-avatar>
+        <ion-label>
+          <p>{{ item.jenis_cuti?.nama }}</p>
+          <p class="status-text status-{{ getStatus(item) }}">{{ getStatus(item) | titlecase }}</p>
+        </ion-label>
+        
+        <ion-icon 
+          [name]="getIconForStatus(getStatus(item))" 
+          [color]="getColorForStatus(getStatus(item))" 
+          slot="end"
+          class="status-icon">
+        </ion-icon>
+
+      </ion-item>
+    </ion-list>
+    <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+      <ion-fab-button routerLink="/create-surat">
+        <ion-icon name="mail-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+</ion-content>

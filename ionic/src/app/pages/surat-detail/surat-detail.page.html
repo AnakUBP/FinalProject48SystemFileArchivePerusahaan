@@ -1,0 +1,102 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Detail Pengajuan</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Tampilkan loading spinner saat data sedang diambil dari server -->
+  <div *ngIf="isLoading" class="ion-text-center ion-padding">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+  </div>
+
+  <!-- Tampilkan konten hanya jika data 'pengajuan' sudah ada -->
+  <div *ngIf="pengajuan" class="ion-padding">
+    
+    <ion-card class="detail-card">
+      <ion-card-header>
+        <ion-card-subtitle>Diajukan oleh: {{ pengajuan.user?.name }}</ion-card-subtitle>
+        <ion-card-title>{{ pengajuan.jenis_cuti?.nama || 'Jenis Cuti' }}</ion-card-title>
+      </ion-card-header>
+      
+      <ion-card-content>
+        <!-- Bagian untuk menampilkan status dan tanggal pengajuan -->
+        <div class="status-section">
+          <span class="status-badge status-{{ getStatus(pengajuan) }}">
+            {{ getStatus(pengajuan) | titlecase }}
+          </span>
+          <span class="date-info">
+            {{ pengajuan.created_at | date:'d MMM yyyy, HH:mm' }}
+          </span>
+        </div>
+
+        <ion-list lines="none" class="detail-list">
+          <ion-item>
+            <ion-label>
+              <h2>Rentang Tanggal</h2>
+              <p>{{ pengajuan.tanggal_mulai | date:'d MMMM yyyy' }} - {{ pengajuan.tanggal_selesai | date:'d MMMM yyyy' }}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <h2>Alasan</h2>
+              <p class="reason">{{ pengajuan.alasan }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Kartu ini hanya akan muncul jika surat sudah diproses (disetujui/ditolak) -->
+    <ion-card *ngIf="pengajuan.surat_cuti_resmi?.approved_by" class="detail-card">
+      <ion-card-header>
+        <ion-card-title>Detail Persetujuan</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list lines="none" class="detail-list">
+          <ion-item>
+            <ion-label>
+              <h2>Diproses oleh</h2>
+              <p>{{ pengajuan.surat_cuti_resmi.approver?.name || 'Admin Sistem' }}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <h2>Tanggal Diproses</h2>
+              <p>{{ pengajuan.surat_cuti_resmi.approved_at | date:'d MMMM yyyy, HH:mm' }}</p>
+            </ion-label>
+          </ion-item>
+          <ion-item *ngIf="pengajuan.surat_cuti_resmi.catatan_approval">
+            <ion-label>
+              <h2>Catatan</h2>
+              <p>{{ pengajuan.surat_cuti_resmi.catatan_approval }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Kartu ini hanya akan muncul jika ada URL pratinjau dokumen -->
+    <ion-card *ngIf="documentPreviewUrl" class="detail-card document-preview-card">
+      <ion-card-header>
+        <ion-card-title>Pratinjau Surat</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="iframe-container">
+          <!-- iframe akan menampilkan konten dari Google Docs Viewer -->
+          <iframe [src]="documentPreviewUrl" frameborder="0"></iframe>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+
+<ion-footer *ngIf="pengajuan?.surat_cuti_resmi?.file_hasil_path" class="ion-no-border ion-padding">
+  <ion-button expand="block" (click)="viewSurat()">
+    <ion-icon slot="start" name="document-text-outline"></ion-icon>
+    Download Hasil Surat
+  </ion-button>
+</ion-footer>

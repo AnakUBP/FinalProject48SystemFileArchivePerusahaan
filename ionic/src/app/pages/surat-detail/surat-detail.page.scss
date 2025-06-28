@@ -1,0 +1,130 @@
+ion-header.ion-no-border ion-toolbar {
+    --background: #fffff7;
+    --color: #485aff;
+}
+
+/* Mengatur latar belakang utama halaman */
+ion-content {
+    --background: #485aff;
+}
+
+.detail-card {
+    margin: 0 0 16px;
+    border-radius: 16px;
+    box-shadow: none;
+    border: 1px solid #e0e0e0;
+    background: #ffffff;
+}
+
+/* Bagian header kartu (untuk judul) */
+ion-card-header {
+    padding-bottom: 8px;
+}
+
+ion-card-subtitle {
+    font-weight: 500;
+}
+
+ion-card-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--ion-color-primary);
+}
+
+ion-card-content {
+    padding-top: 0;
+}
+
+/* Bagian yang menampilkan status pengajuan */
+.status-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+}
+
+/* Info tanggal di sebelah kanan status */
+.date-info {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+/* Badge untuk status (Diajukan, Disetujui, Ditolak) */
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: white;
+
+    &.status-diajukan { background: var(--ion-color-primary); }
+    &.status-disetujui { background: var(--ion-color-success); }
+    &.status-ditolak { background: var(--ion-color-danger); }
+}
+
+/* Daftar detail di dalam kartu */
+.detail-list {
+    background: transparent;
+    padding: 0;
+
+    ion-item {
+        --background: transparent;
+        --padding-start: 0;
+        --inner-padding-end: 0;
+        --border-width: 0;
+        margin-bottom: 8px;
+        
+        /* Label kecil di atas (Email, Telepon, dll) */
+        h2 {
+            font-size: 0.9rem;
+            color: #666;
+            margin: 0 0 4px;
+            font-weight: 500;
+        }
+
+        /* Teks data utama */
+        p {
+            font-size: 1.1rem;
+            color: #111;
+            font-weight: 500;
+            white-space: normal; /* Agar teks panjang bisa pindah baris */
+        }
+    }
+}
+
+/* Footer untuk tombol aksi */
+ion-footer {
+    background: #f4f5f8; // Samakan dengan latar belakang konten
+
+    ion-button {
+        --background: #485aff;
+        --border-radius: 12px;
+        height: 48px;
+        font-weight: bold;
+    }
+}
+
+.document-preview-card {
+    ion-card-content {
+        padding: 0; // Hapus padding default agar iframe menempel
+    }
+}
+
+.iframe-container {
+    position: relative;
+    width: 100%;
+    /* Menggunakan trik aspect-ratio untuk tinggi yang responsif */
+    padding-top: 141.42%; /* Aspect ratio untuk kertas A4 (29.7 / 21) */
+    overflow: hidden;
+    
+    iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+}

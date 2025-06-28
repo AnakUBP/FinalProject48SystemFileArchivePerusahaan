@@ -1,0 +1,74 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Profil Saya</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="profile-content">
+  <!-- Tampilkan loading jika data belum siap -->
+  <div *ngIf="!profileData" class="ion-text-center ion-padding">
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <div *ngIf="profileData">
+    <!-- Bagian Header Profil -->
+    <div class="profile-header">
+      <ion-avatar class="profile-avatar">
+        <img [src]="profileData.profile?.foto ? getFullImageUrl(profileData.profile.foto) : 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
+      </ion-avatar>
+      <h2 class="profile-name">{{ profileData.profile?.nama_lengkap || profileData.name }}</h2>
+      <p class="profile-role">{{ profileData.role | titlecase }}</p>
+    </div>
+
+    <!-- Bagian Detail Informasi -->
+    <ion-list class="details-list" lines="full">
+      <ion-list-header>
+        Informasi Kontak
+      </ion-list-header>
+      <ion-item>
+        <ion-icon name="mail-outline" slot="start" color="primary"></ion-icon>
+        <ion-label>
+          <h3>Email</h3>
+          <p>{{ profileData.email }}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-icon name="call-outline" slot="start" color="primary"></ion-icon>
+        <ion-label>
+          <h3>Telepon</h3>
+          <p>{{ profileData.profile?.telepon || '-' }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-list-header>
+        Informasi Pribadi & Pekerjaan
+      </ion-list-header>
+      <ion-item>
+        <ion-icon name="briefcase-outline" slot="start" color="primary"></ion-icon>
+        <ion-label>
+          <h3>Jabatan</h3>
+          <p>{{ profileData.profile?.jabatan || '-' }}</p>
+        </ion-label>
+      </ion-item>
+       <ion-item>
+        <ion-icon name="calendar-outline" slot="start" color="primary"></ion-icon>
+        <ion-label>
+          <h3>Tanggal Lahir</h3>
+          <p>{{ profileData.profile?.tanggal_lahir ? (profileData.profile.tanggal_lahir | date:'d MMMM yyyy') : '-' }}</p>
+        </ion-label>
+      </ion-item>
+      
+      <!-- FIX: Menambahkan bagian untuk menampilkan sisa kuota cuti -->
+      <ion-item class="quota-item">
+        <ion-icon name="hourglass-outline" slot="start" color="primary"></ion-icon>
+        <ion-label>
+          <h3>Sisa Kuota Cuti</h3>
+          <p class="quota-text">{{ profileData.profile?.sisa_kuota_cuti ?? 0 }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

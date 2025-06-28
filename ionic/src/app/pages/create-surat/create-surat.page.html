@@ -1,0 +1,83 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Buat Pengajuan Cuti</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form (ngSubmit)="submitPengajuan()" #form="ngForm" class="ion-padding">
+
+    <ion-card class="form-card">
+      <ion-card-header>
+        <ion-card-title>Detail Pengajuan</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <!-- Pilihan Jenis Cuti -->
+        <ion-item>
+          <ion-label position="floating">Jenis Cuti</ion-label>
+          <ion-select name="jenis_cuti_id" [(ngModel)]="pengajuanData.jenis_cuti_id" required>
+            <ion-select-option *ngFor="let jenis of jenisCutiList" [value]="jenis.id">
+              {{ jenis.nama }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+  
+        <!-- FIX: Input tanggal sekarang berada di baris terpisah -->
+        <ion-label>Tanggal Mulai</ion-label>
+        <ion-item class="input-item" lines="none">
+          <ion-icon name="calendar-clear-outline" slot="start"></ion-icon>
+          <ion-input type="date" name="tanggal_mulai" [(ngModel)]="pengajuanData.tanggal_mulai" required></ion-input>
+        </ion-item>
+        <ion-label>Tanggal Selesai</ion-label>
+        <ion-item class="input-item" lines="none">
+          <ion-icon name="calendar-outline" slot="start"></ion-icon>
+          <ion-input type="date" name="tanggal_selesai" [(ngModel)]="pengajuanData.tanggal_selesai" required></ion-input>
+        </ion-item>
+        
+        <!-- Alasan Pengajuan -->
+        <ion-label position=>Alasan</ion-label>
+        <ion-item class="input-item" lines="none">
+          <ion-icon name="chatbox-ellipses-outline" slot="start"></ion-icon>
+          <ion-textarea name="alasan" [(ngModel)]="pengajuanData.alasan" [autoGrow]="true" required></ion-textarea>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+    <ion-card class="form-card">
+      <ion-card-header>
+        <ion-card-title>Verifikasi & Lampiran</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <!-- Tanda Tangan Digital -->
+        <div class="signature-container">
+          <label class="form-label">Tanda Tangan Anda (Wajib)</label>
+          <canvas #signatureCanvas class="signature-pad"></canvas>
+          <ion-button fill="clear" size="small" (click)="clearSignature()" class="clear-button">
+            <ion-icon slot="start" name="refresh-outline"></ion-icon>
+            Bersihkan
+          </ion-button>
+        </div>
+
+        <!-- Upload Lampiran -->
+        <div class="attachment-container">
+          <label class="form-label">Lampiran (Opsional)</label>
+          <input type="file" (change)="handleFileInput($event)" class="file-input">
+          <div *ngIf="selectedFileName" class="file-name">
+            <ion-icon name="document-attach-outline"></ion-icon>
+            {{ selectedFileName }}
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Tombol Kirim -->
+    <ion-button class="submit-button" type="submit" expand="block" [disabled]="form.invalid || isLoading">
+      <ion-icon name="send-outline" slot="start"></ion-icon>
+      Kirim Pengajuan
+    </ion-button>
+  </form>
+</ion-content>

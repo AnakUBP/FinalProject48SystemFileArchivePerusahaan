@@ -1,0 +1,75 @@
+ion-header.ion-no-border ion-toolbar {
+    --background: #fffff7;
+    --color: #485aff;
+}
+
+/* Mengatur latar belakang utama halaman */
+ion-content {
+    --background: #485aff;
+}
+
+/* Memberi gaya pada card yang membungkus form */
+.form-card {
+    margin: 16px 0;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); /* Bayangan yang lembut */
+    /* Menghapus padding default dari ion-card-content */
+    ion-card-content {
+        padding: 16px;
+    }
+    background: #fffff7;
+}
+
+ion-card-title {
+    color: #485aff;
+    font-weight: bold;
+    padding-left: 16px; /* Menyesuaikan padding judul */
+}
+
+ion-label{
+    color: #485aff;
+}
+
+/* Styling untuk semua item input di dalam form */
+ion-item {
+    --background: transparent;
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    --border-width: 0 0 1px 0; /* Hanya tampilkan garis bawah */
+    --border-color: #485aff;
+    color: #485aff;
+    margin-bottom: 24px; /* Memberi jarak yang lebih nyaman antar input */
+    border-radius: 0;
+    box-shadow: none;
+}
+
+/* Menghapus margin bawah dari item terakhir agar pas dengan card */
+ion-item:last-child {
+    margin-bottom: 0;
+}
+
+/* Memberi highlight saat input sedang aktif/fokus */
+.item-has-focus {
+    --border-color: var(--ion-color-primary);
+}
+
+/* Menambahkan sedikit jarak pada ikon di dalam input */
+.input-item ion-icon {
+    margin-right: 8px;
+    color: var(--ion-color-medium);
+}
+
+/* Mengubah warna ikon saat input menjadi fokus */
+.input-item.item-has-focus ion-icon {
+    color: var(--ion-color-primary);
+}
+
+/* Styling untuk tombol submit utama */
+.submit-button {
+    --border-radius: 12px;
+    height: 48px;
+    font-weight: bold;
+    text-transform: none; /* Agar tidak menjadi huruf kapital semua */
+    font-size: 1rem;
+    margin-top: 16px;
+}

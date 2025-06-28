@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "types": [],
+    "lib": [
+      "es2018",
+      "dom" 
+    ]
+  },
+  "files": [
+    "src/main.ts",
+    "src/polyfills.ts",
+    "src/zone-flags.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts",
+    "src/custom-types.d.ts"
+  ]
+}

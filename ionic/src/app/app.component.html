@@ -1,0 +1,31 @@
+<ion-app>
+    <ion-menu contentId="main-content" type="overlay">
+      <ion-header class="ion-no-border">
+        <ion-toolbar class="menu-header">
+          <!-- Menampilkan profil singkat di atas menu -->
+          <div class="menu-profile">
+            <ion-avatar>
+              <img [src]="currentUser?.profile?.foto ? getFullImageUrl(currentUser.profile.foto) : 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
+            </ion-avatar>
+            <h3>{{ currentUser?.profile?.nama_lengkap || currentUser?.name }}</h3>
+            <p>{{ currentUser?.email }}</p>
+          </div>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-list id="menu-list">
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+            <ion-item (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" [class.selected]="selectedIndex === i">
+              <ion-icon slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+              <ion-label>{{ p.title }}</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-item button (click)="logout()" lines="none" class="logout-item">
+              <ion-icon slot="start" name="log-out-outline"></ion-icon>
+              <ion-label>Logout</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+</ion-app>

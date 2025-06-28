@@ -70,14 +70,3 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
 });
 
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

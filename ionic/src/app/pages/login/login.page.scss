@@ -1,0 +1,106 @@
+:host {
+  --login-background-color: #485aff;
+  --form-background-color: #ffffff;
+}
+
+ion-input {
+  --color: #333; /* Gunakan kode hex untuk hitam atau abu-abu gelap */
+}
+
+/* Mengatur ion-content sebagai container utama */
+.login-page {
+  --background: var(--form-background-color);
+}
+
+/* Styling untuk Header Visual */
+.login-header {
+  background: var(--login-background-color);
+  height: 35vh; /* Tinggi sekitar 35% dari layar */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-image {
+  width: 40%; /* Ukuran logo */
+  height: auto;
+}
+
+/* Styling untuk Area Form */
+.login-form {
+  padding: 0 20px ;
+  position: relative;
+}
+
+.form-container {
+  background: var(--form-background-color);
+  border-radius: 20px;
+  padding: 24px;
+  margin-top: 10%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.login-title {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: bold;
+  margin-bottom: 10%;
+  color: #333;
+  order: 1; // Jadikan ini item pertama
+}
+
+form {
+  // KUNCI: Atur urutan form setelah judul
+  order: 2; // Jadikan ini item kedua
+} 
+
+/* Menghilangkan background pada ion-list */
+.input-list {
+  background: transparent;
+}
+
+/* Styling untuk Input Fields */
+ion-item {
+  --background: transparent;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 16px;
+}
+
+ion-label[position="floating"] {
+  color: #888;
+}
+
+/* Styling untuk Link Lupa Password */
+.forgot-password {
+  text-align: right;
+  margin-top: 8px;
+  margin-bottom: 24px;
+}
+
+.forgot-password a {
+  font-size: 0.9rem;
+  color: var(--login-background-color);
+  text-decoration: none;
+}
+
+/* Styling untuk Tombol Submit */
+.submit-btn {
+  --background: var(--login-background-color);
+  --border-radius: 10px;
+  height: 50px;
+  font-weight: bold;
+}
+/* Styling untuk Footer */
+.footer-toolbar {
+  --background: var(--login-background-color);
+  --color: #ffffff;
+  text-align: center;
+  height: 100%;
+}
+
+.footer-title {
+  font-size: 2.0rem;
+  font-weight: bold;
+  margin: 5%;
+}

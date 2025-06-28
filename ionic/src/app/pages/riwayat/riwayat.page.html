@@ -1,0 +1,80 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Riwayat Pengajuan</ion-title>
+  </ion-toolbar>
+
+  <!-- Searchbar untuk mencari surat -->
+  <ion-toolbar>
+    <ion-searchbar 
+      placeholder="Cari jenis cuti atau status..." 
+      (ionInput)="searchSurat($event)"
+      [debounce]="300">
+    </ion-searchbar>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <!-- Segment Buttons untuk filter status -->
+  <ion-segment [(ngModel)]="selectedStatus" (ionChange)="filterByStatus()" scrollable>
+    <ion-segment-button value="semua">
+      <ion-label>Semua</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="diajukan">
+      <ion-label>Diajukan</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="disetujui">
+      <ion-label>Disetujui</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="ditolak">
+      <ion-label>Ditolak</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="kadaluwarsa">
+      <ion-label>Kadaluwarsa</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- Refresh konten saat ditarik ke bawah -->
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <!-- Daftar Riwayat Pengajuan -->
+  <ion-list class="history-list">
+    <!-- Tampilkan loading spinner saat data diambil -->
+    <div *ngIf="isLoading" class="ion-text-center ion-padding">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+
+    <!-- Tampilkan kartu untuk setiap pengajuan -->
+    <ion-card *ngFor="let item of filteredPengajuan" class="history-card status-border-{{ getStatus(item) }}" [routerLink]="['/surat-detail', item.id]" button>
+      <ion-card-header>
+        <ion-card-subtitle>{{ item.created_at | date:'d MMMM yyyy, HH:mm' }}</ion-card-subtitle>
+        <ion-card-title>
+          {{ item.jenis_cuti?.nama || 'Jenis Cuti' }}
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="card-content-wrapper">
+          <p class="reason">{{ item.alasan }}</p>
+          <div class="status-section">
+            <span class="status-badge status-{{ getStatus(item) }}">
+              {{ getStatus(item) | titlecase }}
+            </span>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Tampilkan pesan jika tidak ada data -->
+    <div *ngIf="!isLoading && filteredPengajuan.length === 0" class="empty-state">
+      <ion-icon name="documents-outline"></ion-icon>
+      <h3>Tidak Ada Riwayat</h3>
+      <p>Belum ada pengajuan dengan status ini.</p>
+    </div>
+  </ion-list>
+</ion-content>

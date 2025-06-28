@@ -1,0 +1,78 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Kalender</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="calendar-container">
+    
+    <!-- Header Kalender -->
+    <div class="calendar-header">
+      <div class="month-display">
+        <span class="month-name">{{ currentMonthName | uppercase }}</span>
+        <span class="year">{{ currentYear }}</span>
+      </div>
+      <div class="navigation">
+        <ion-button fill="clear" size="small" (click)="previousMonth()">
+          <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" size="small" (click)="nextMonth()">
+          <ion-icon slot="icon-only" name="chevron-forward-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+    
+    <!-- Grid Kalender -->
+    <div class="calendar-grid">
+      <!-- Header Hari -->
+      <div *ngFor="let day of daysOfWeek" class="day-name">{{ day }}</div>
+      
+      <!-- Tanggal-tanggal -->
+      <div *ngFor="let day of days" 
+           class="day-cell"
+           (click)="selectDate(day)"
+           [class.selected]="isDateSelected(day)"
+           [class.today]="isToday(day)"
+           [class.leave-date]="isLeaveDate(day)">
+        {{ day }}
+      </div>
+    </div>
+  </div>
+
+  <!-- FIX: Menambahkan bagian Agenda di bawah kalender -->
+  <div class="list-header">
+    <h3>{{ agendaTitle }}</h3>
+  </div>
+
+  <ion-list class="agenda-list">
+    <div *ngIf="isLoading" class="ion-text-center ion-padding">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+
+    <ion-card *ngFor="let item of filteredAgenda" class="agenda-card">
+      <ion-item lines="none">
+        <ion-avatar slot="start">
+          <img [src]="item.user?.profile?.foto ? getFullImageUrl(item.user.profile.foto) : 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ item.jenis_cuti?.nama || 'Jenis Cuti' }}</h2>
+          <p>Oleh: <strong>{{ currentUser?.profile?.nama_lengkap || currentUser?.name }}</strong></p>
+        </ion-label>
+        <div class="status-badge status-{{ getStatus(item) }}">
+          {{ getStatus(item) | titlecase }}
+        </div>
+      </ion-item>
+    </ion-card>
+    
+    <div *ngIf="!isLoading && filteredAgenda.length === 0" class="empty-state">
+      <ion-icon name="documents-outline"></ion-icon>
+      <h3>Tidak Ada Agenda</h3>
+      <p>Tidak ada pengajuan cuti pada periode ini.</p>
+    </div>
+  </ion-list>
+
+</ion-content>
