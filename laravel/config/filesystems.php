@@ -35,6 +35,7 @@ return [
             'root' => storage_path('app'),
             'throw' => false,
         ],
+<<<<<<< HEAD
 	'public' => [
     		'driver' => 'local',
     		'root'   => public_path('storage'), // <-- FIX: Sekarang menunjuk langsung ke public/storage
@@ -42,6 +43,15 @@ return [
     		'visibility' => 'public',
     		'throw' => false,
 	],
+=======
+
+        'public' => [
+            'driver' => 'local',
+            'root'   => public_path('storage'), // <-- UBAH BARIS INI
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+        ],
+>>>>>>> 9b54041bbc1fefd45d60885109b8d2f1d288d90e
 
         's3' => [
             'driver' => 's3',

@@ -12,7 +12,7 @@ const TOKEN_KEY = 'authToken';
 })
 export class AuthService {
   // URL API Laravel Anda
-  private readonly API_URL = 'http://127.0.0.1:8000/api';
+  private readonly API_URL = 'https://lettera.anopus.my.id/api';
 
   // BehaviorSubject untuk melacak status autentikasi secara real-time
   isAuthenticated: BehaviorSubject<boolean | null> = new BehaviorSubject<boolean | null>(null);

@@ -27,7 +27,7 @@ export class CalendarPage implements OnInit {
   // Set untuk menyimpan tanggal cuti yang disetujui (format: YYYY-MM-DD)
   private approvedLeaveDates = new Set<string>();
   
-  private readonly STORAGE_URL = 'http://127.0.0.1:8000/storage/';
+  private readonly STORAGE_URL = 'https://lettera.anopus.my.id/storage/';
 
   constructor(
     private cutiService: CutiService,

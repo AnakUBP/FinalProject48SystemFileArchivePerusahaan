@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+88import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { CutiService } from 'src/app/services/cuti.service';
@@ -14,17 +14,15 @@ export class SuratDetailPage implements OnInit {
 
   pengajuan: any = null;
   isLoading: boolean = false;
-  
-  // FIX: Properti baru untuk menyimpan URL pratinjau dokumen yang aman
   documentPreviewUrl: SafeResourceUrl | null = null;
 
-  private readonly API_BASE_URL = 'https://let.necrostein.com';
+  private readonly API_BASE_URL = 'https://lettera.anopus.my.id';
 
   constructor(
     private route: ActivatedRoute,
     private cutiService: CutiService,
     private loadingCtrl: LoadingController,
-    private sanitizer: DomSanitizer // Inject DomSanitizer
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit() {
@@ -46,10 +44,7 @@ export class SuratDetailPage implements OnInit {
     this.cutiService.getPengajuanDetail(id).subscribe({
       next: (data) => {
         this.pengajuan = data;
-        
-        // FIX: Membuat URL pratinjau setelah data diterima
         this.generateDocumentUrl(data);
-        
         this.isLoading = false;
         loading.dismiss();
       },
@@ -60,18 +55,12 @@ export class SuratDetailPage implements OnInit {
       }
     });
   }
-  
-  // FIX: Fungsi baru untuk membuat URL pratinjau Google Docs Viewer
+
   generateDocumentUrl(pengajuanData: any) {
     const filePath = pengajuanData?.surat_cuti_resmi?.file_hasil_path;
     if (filePath) {
-      // 1. Buat URL lengkap ke file .docx di server Anda
       const fullFileUrl = `${this.API_BASE_URL}/storage/${filePath}`;
-      
-      // 2. Buat URL Google Docs Viewer
       const viewerUrl = `https://docs.google.com/gview?url=${encodeURIComponent(fullFileUrl)}&embedded=true`;
-      
-      // 3. Sanitasi URL agar aman digunakan di dalam iframe
       this.documentPreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(viewerUrl);
     }
   }

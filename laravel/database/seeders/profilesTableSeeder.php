@@ -23,7 +23,7 @@ class ProfilesTableSeeder extends Seeder
             ],
             [
                 'users_id' => 2,
-                'nama_lengkap' => 'fajar wisnu pratama',
+                'nama_lengkap' => 'budi santoso',
                 'alamat' => 'Jl. Kenanga No. 5',
                 'telepon' => '085677889900',
                 'tanggal_lahir' => '1995-03-10',
