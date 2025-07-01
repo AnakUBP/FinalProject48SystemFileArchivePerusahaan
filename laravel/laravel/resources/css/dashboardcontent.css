@@ -1,0 +1,186 @@
+/* Container untuk kartu statistik */
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    padding: 1.5rem;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+
+.stat-card.primary { background-color: #485aff; }
+.stat-card.secondary { background-color: #6c757d; }
+
+.stat-card h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+}
+
+.stat-card p {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.stat-card a {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.4rem 0.8rem;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    text-decoration: none;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    transition: background-color 0.2s;
+}
+
+.stat-card a:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.calendars-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.calendar-container {
+    background: #ffffff;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.calendar-header .month-year {
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.calendar-nav button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 0 0.5rem;
+}
+
+.calendar-nav button:hover {
+    color: var(--primary-dark);
+}
+
+.calendar-header .month-year {
+    font-weight: 600;
+    font-size: 1.2rem;
+    text-align: center;
+    flex-grow: 1; /* Biarkan nama bulan mengisi ruang tengah */
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    text-align: center;
+}
+
+.calendar-grid .day-name {
+    font-weight: 500;
+    color: #999;
+    font-size: 0.8rem;
+}
+
+.calendar-grid .day-cell {
+    padding: 0.5rem 0;
+    border-radius: 8px;
+}
+
+.calendar-grid .day-cell.today {
+    background-color: var(--secondary-color, #6c757d);
+    color: #485aff;
+    font-weight: bold;
+}
+
+/* FIX: Styling untuk tanggal cuti yang ditandai */
+.calendar-grid .day-cell.leave-date {
+    background-color: rgba(67, 97, 238, 0.2); /* Warna biru muda transparan */
+    color: var(--primary-color, #485aff);
+    font-weight: bold;
+    position: relative;
+}
+
+/* Menambahkan titik di bawah tanggal cuti */
+.calendar-grid .day-cell.leave-date::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: var(--primary-color, #485aff);
+}
+
+@media (max-width: 992px) {
+    .calendars-wrapper {
+        grid-template-columns: 1fr;
+    }
+}
+
+.calendar-grid .day-cell.has-leave {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 5px;
+    align-items: center;
+    background-color: #f8f9fa; /* Beri sedikit latar belakang */
+}
+
+.leave-indicators {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 4px;
+    width: 100%;
+}
+
+/* FIX: Styling untuk setiap foto profil */
+.leave-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    background-color: #ccc; /* Fallback jika gambar gagal dimuat */
+}
+
+/* Membuat avatar saling menumpuk */
+.leave-avatar:not(:first-child) {
+    margin-left: -8px; 
+}
+
+/* Styling untuk indikator "+X" */
+.leave-avatar.more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #6c757d;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+

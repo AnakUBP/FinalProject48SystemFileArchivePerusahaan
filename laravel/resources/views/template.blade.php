@@ -150,7 +150,7 @@
                                         </span>
                                     </td>
                                     <td class="template-actions-cell">
-                                        <a href="{{ Storage::url('public/' . $template->file_path) }}" download
+                                        <a href="{{ asset('storage/' . $template->file_path) }}" download
                                             class="btn btn-secondary">
                                             <i class="fas fa-download"></i>
                                         </a>

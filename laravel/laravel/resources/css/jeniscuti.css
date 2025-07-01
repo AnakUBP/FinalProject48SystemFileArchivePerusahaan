@@ -1,0 +1,114 @@
+/* Jenis Cuti Styles */
+.jenis-cuti-container {
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    margin-top: 1.5rem;
+}
+
+.jenis-cuti-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.jenis-cuti-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Tabel User */
+.jenis-cuti-table {
+    display: grid;
+    /* Membuat 5 kolom dengan lebar yang sama (1fr = 1 fraksi ruang yang tersedia) */
+    grid-template-columns: repeat(4, 1fr);
+    width: 100%;
+    border-collapse: collapse; 
+    margin-top: 1.5rem;
+    border: 1px solid var(--medium-gray);
+    border-radius: 8px;
+    overflow: hidden; /* Agar border-radius terlihat */
+}
+
+/* KUNCI UTAMA: "Meleburkan" elemen perantara agar sel (th/td) menjadi anak langsung dari grid */
+.jenis-cuti-table thead, .jenis-cuti-table tbody, .jenis-cuti-table tr {
+    display: contents;
+}
+
+/* Styling untuk semua sel header (th) */
+.jenis-cuti-table th {
+    padding: 1rem;
+    text-align: left;
+    background-color: var(--light-gray);
+    font-weight: 500;
+    color: var(--text-color);
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+/* Styling untuk semua sel data (td) */
+.jenis-cuti-table td {
+    padding: 1rem;
+    text-align: left;
+    background-color: var(--white);
+    border-bottom: 1px solid var(--medium-gray);
+    display: flex; /* Menggunakan flex untuk alignment konten di dalam sel */
+    align-items: center;
+}
+
+/* Menghilangkan border bawah pada baris terakhir */
+.jenis-cuti-table tr:last-child td {
+    border-bottom: none;
+}
+
+
+.template-badge {
+    background-color: rgba(67, 97, 238, 0.1);
+    color: var(--primary-color);
+    padding: 0.3rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    display: inline-block;
+}
+
+.jenis-cuti-actions-cell {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Modal Styles untuk Jenis Cuti */
+.modal-jenis-cuti {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-jenis-cuti-content {
+    background-color: var(--white);
+    margin: 5% auto;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 50%;
+    max-width: 600px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.select-template {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid var(--medium-gray);
+    border-radius: 5px;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.select-template:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}

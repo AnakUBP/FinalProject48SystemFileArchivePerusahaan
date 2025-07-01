@@ -1,0 +1,172 @@
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+/* Navigasi Tab */
+.cuti-nav-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--medium-gray);
+    margin-bottom: 1.5rem;
+}
+
+.tab-button {
+    background: none;
+    border: none;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #6c757d;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.tab-button:hover {
+    color: var(--primary-color);
+}
+
+.tab-button.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+.count-badge {
+    background-color: var(--medium-gray);
+    color: #6c757d;
+    padding: 0.1rem 0.5rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.tab-button.active .count-badge {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+/* Panel Konten */
+.cuti-content-pane {
+    display: none; /* Sembunyikan semua panel secara default */
+}
+
+.cuti-content-pane.active {
+    display: block; /* Tampilkan hanya panel yang aktif */
+}
+
+/* Styling untuk Kartu Pengajuan */
+.cuti-card {
+    background-color: var(--white);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.card-body {
+    padding: 1rem;
+    flex-grow: 1;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem 0;
+}
+
+.card-subtitle {
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+    margin: 0 0 0.75rem 0;
+}
+
+.card-text {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.card-footer {
+    padding: 0.75rem 1rem;
+    background-color: #f8f9fa;
+    border-top: 1px solid var(--medium-gray);
+    text-align: right;
+}
+
+.empty-message {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: #6c757d;
+    background-color: var(--light-gray);
+    border-radius: 8px;
+}
+
+/* Class khusus untuk modal yang lebih lebar */
+.modal-content.wide {
+    max-width: 900px; /* Lebar yang lebih besar untuk layout 2 kolom */
+}
+
+/* Mengatur layout 2 kolom pada modal body */
+.modal-body.two-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dua kolom dengan lebar yang sama */
+    gap: 2rem; /* Jarak antar kolom */
+}
+
+.detail-column h4,
+.approval-column h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.detail-group {
+    margin-bottom: 1rem;
+}
+
+.detail-group strong {
+    display: block;
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+}
+
+.detail-group p {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.signature-canvas {
+    border: 2px dashed #ced4da;
+    border-radius: 8px;
+    cursor:alias;
+    width: 100%;
+    height: 150px;
+}
+
+/* Tombol untuk membersihkan tanda tangan */
+#clear-signature {
+    margin-top: 0.5rem;
+}
+
+
+/* Responsif untuk layar kecil */
+@media (max-width: 768px) {
+    .modal-body.two-columns {
+        grid-template-columns: 1fr; /* Tumpuk kolom di layar kecil */
+    }
+}
