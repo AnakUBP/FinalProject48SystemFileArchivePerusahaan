@@ -1,4 +1,4 @@
-package io.ionic.demo.pg.cap.ng;
+package com.lettera.karyawanapp;
 
 import com.getcapacitor.BridgeActivity;
 
