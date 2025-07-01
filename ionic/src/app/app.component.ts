@@ -11,7 +11,7 @@ import { MenuController } from '@ionic/angular'; // <-- 1. Import MenuController
 export class AppComponent {
   public selectedIndex = 0;
   public currentUser: any = null;
-  private readonly STORAGE_URL = 'zstorage/';
+  private readonly STORAGE_URL = 'storage/';
 
   public appPages = [
     { title: 'Profil Saya', url: '/profile', icon: 'person-circle' },

@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class ProfilePage implements OnInit {
   profileData: any = null;
-  private readonly STORAGE_URL = 'http://127.0.0.1:8000/storage/';
+  private readonly STORAGE_URL = 'https://lettera.anopus.my.id/storage/';
 
   constructor(private authService: AuthService) { }
 

@@ -9,7 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage {
-  public laravelApiUrl = 'http://127.0.0.1:8000/'; 
+  public laravelApiUrl = 'https://lettera.anopus.my.id/'; 
   credentials = {
     email: '',
     password: ''

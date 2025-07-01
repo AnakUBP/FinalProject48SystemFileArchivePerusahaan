@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class CutiService {
   // Ganti dengan URL API Laravel Anda
-  private readonly API_URL = 'http://127.0.0.1:8000/api'; 
+  private readonly API_URL = 'https://lettera.anopus.my.id/api'; 
 
   constructor(private http: HttpClient) { }
 

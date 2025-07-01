@@ -9,7 +9,7 @@ import { filter, take } from 'rxjs/operators';
   styleUrls: ['./splash.page.scss'],
 })
 export class SplashPage {
-  public laravelApiUrl = 'http://127.0.0.1:8000/'; 
+  public laravelApiUrl = 'https://lettera.anopus.my.id/'; 
   constructor(
     private authService: AuthService,
     private router: Router
